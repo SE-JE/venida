@@ -4,7 +4,7 @@
  * SEJE - Digital
  */
 
- namespace Config {
+namespace Config {
 
     export class Config {
 

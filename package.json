@@ -19,6 +19,7 @@
     "uglify-js": "^3.16.3"
   },
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "fastify": "^4.4.0"
   }
 }
