@@ -1,0 +1,12 @@
+# IDE
+/.vscode
+
+# environment variable
+.env
+
+# dependency
+node_modules/
+package-lock.json
+
+# build project
+build/

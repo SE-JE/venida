@@ -1,0 +1,21 @@
+{
+  "name": "venida-platform",
+  "version": "1.0.0",
+  "description": "Venida Platform",
+  "main": "server.js",
+  "scripts": {
+    "build": "ts-node compiler.ts",
+    "start": "pm2 start venida.server.yaml",
+    "check": "node ./build/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Org, SE-JE Digital",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.7.1",
+    "ts-node": "^10.9.1",
+    "tsconfig": "^7.0.0",
+    "typescript": "^4.7.4",
+    "uglify-js": "^3.16.3"
+  }
+}
