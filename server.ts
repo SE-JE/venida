@@ -15,11 +15,18 @@ Venida.setPath(__dirname);
  */
 Venida.define('Config', Venida.class('Venida.config.config'));
 
+Venida.define('RouterConfig', Venida.class('Venida.config.router'));
+
 
 /**
  * Web Server Initialize
  */
 const Server = Venida.class('Venida.system.Core.Boot');
+
+/**
+ * Set route configuration
+ */
+Venida.class('Venida.system.Handler.Route').initRoute();
 
 const nodePort = Venida.Config.get('server')['port'];
 const nodeName = Venida.Config.get('server')['name'];

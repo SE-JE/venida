@@ -32,6 +32,7 @@ namespace Config {
                 model: 'App.Models',
                 hooks: 'App.Http.Hooks',
                 applicationPath: '/app',
+                allowedApiMethod: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
             }
         }
