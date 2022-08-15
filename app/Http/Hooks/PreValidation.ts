@@ -10,7 +10,7 @@
 
         public async handler (request: any, response: any) {
 
-            console.log(request.params);
+            console.log('===Hook PreValidation===', request.params);
             
         }
     }
