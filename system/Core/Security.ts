@@ -150,8 +150,6 @@ namespace System.Core {
                     return returnValue;
                 });
             }
-
-            console.log('checkRoute', fetchRoute);
             
             if (!fetchRoute) {
                 /**

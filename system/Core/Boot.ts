@@ -42,5 +42,10 @@ Venida.Server.addHook('preValidation', async (request: any, response: any) => {
     return await PreValidationHook.handler(request, response);
 });
 
+/**
+ * Initial Venida Utils
+ */
+Venida.define('Utils', Venida.class('Venida.config.util'));
+
 
 module.exports = Venida.Server;
