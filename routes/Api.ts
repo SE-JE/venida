@@ -13,7 +13,22 @@ namespace Routes {
             /**
              * Route group prefix
              */
-             {
+            {
+                prefix: '/',
+                version: 'v1',
+                routes: [
+                    {
+                        method: 'get',
+                        controller: 'App.Http.Controllers.Api.V1.RootController',
+                        fn: 'index',
+                        path: '/',
+                        alias: '/',
+                        query: null,
+                        requestAuth: 0
+                    }
+                ]
+            },
+            {
                 prefix: '/home',
                 version: 'v1',
                 routes: [
@@ -23,7 +38,7 @@ namespace Routes {
                         fn: 'index',
                         path: '/home',
                         alias: '/home',
-                        query: '',
+                        query: null,
                         requestAuth: 0
                     }
                 ]
@@ -35,21 +50,30 @@ namespace Routes {
                     {
                         method: 'get',
                         controller: 'App.Http.Controllers.Api.V1.UserController',
-                        fn: 'index',
-                        path: '/user',
-                        alias: '/user',
-                        query: '',
+                        fn: 'detail',
+                        path: '/user/detail',
+                        alias: '/user/detail',
+                        query: '/:id',
                         requestAuth: 0
                     },
                     {
                         method: 'get',
                         controller: 'App.Http.Controllers.Api.V1.UserController',
-                        fn: 'createNewUser',
-                        path: '/user/createNewUser',
-                        alias: '/user/createNewUser',
-                        query: '/:id',
+                        fn: 'index',
+                        path: '/user',
+                        alias: '/user',
+                        query: '/:username/:class',
                         requestAuth: 0
-                    }
+                    },
+                    {
+                        method: 'get',
+                        controller: 'App.Http.Controllers.Api.V1.UserController',
+                        fn: 'index',
+                        path: '/user',
+                        alias: '/user',
+                        query: null,
+                        requestAuth: 0
+                    },
                 ]
             }
         ];

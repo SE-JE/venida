@@ -11,9 +11,9 @@ namespace System.Routes.API {
         /**
          * Dynamic Route Mapping
          */
-        router.get('/', (req: any, res: any, next: any) => {
+        router.get('/:id', (req: any, res: any, next: any) => {
             
-            console.log('req', req.protocol);
+            console.log('req', req.params);
             
             res.send('TEST SUCCESS');
         });
@@ -46,49 +46,7 @@ namespace System.Routes.API {
 
                 let aliasParams = pathParams;
 
-                let routerData = Venida.import('Venida.routes.Api')();
-                
-                // let fetchRouterData = routerData.filter((route: any) => {
-
-                //     let removeSlash = route?.prefix?.split('/');
-
-                //     console.log(removeSlash);
-
-                //     let onetest = route?.routes.map((one: any) => { 
-                //         if (one?.method.toUpperCase() == method) {
-                //             return one;
-                //         }
-                //     });
-                
-                //     return route?.prefix == '/user' && onetest;
-                // });
-
-                let fetchRouterGroupData = routerData.find((routeGroup: any) => {
-                    
-                    return routeGroup?.prefix == '/user';
-                });
-
-                let checkRoute;
-
-                if (fetchRouterGroupData) {
-
-                    console.log('routeGroup found✅');
-                    checkRoute = fetchRouterGroupData?.routes.find((route: any) => {
-
-                        // return route?.method.toUpperCase() == method;
-                        if (route?.method.toUpperCase() == method) {
-                            return route;
-                        } else {
-                            /**
-                             * Request not implement
-                             */
-                            console.log('Route not found');
-                        }
-                    });
-                }
-
-                console.log('fetchRouterData', checkRoute);
-                
+                console.log('pathParams✅', pathParams);
                 
 
             } else {
