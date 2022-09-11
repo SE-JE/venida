@@ -13,7 +13,7 @@ namespace System.Routes.API {
         /**
          * Dynamic Route Mapping
          */
-        router.get('/:id', (req: any, res: any, next: any) => {
+        router.get('/', (req: any, res: any, next: any) => {
             
             console.log('req', req.params);
             
@@ -44,16 +44,17 @@ namespace System.Routes.API {
                 
                 let params = separator.concat(Venida.Request.get(req, 'params')['*']).replace('/index', '');
 
-                let pathParams = params.split(separator)[1];
-                let routeData   = route?.alias.split(separator);
+                let pathParams = params.split(route?.path)[1];
+                // let routeData   = route?.alias.split(separator);
 
                 console.log('pathParams',pathParams);
                 console.log('route.query', route?.query);
 
-                let config = {
+                let config: any = {
                     method: method.toUpperCase(),
                     params: [],
-                    func: routeData[2] ? routeData[2] : 'index',
+                    // func: routeData[2] ? routeData[2] : 'index',
+                    func: route?.fn ? route?.fn : 'index',
                     version: version
                 }
 
@@ -67,11 +68,15 @@ namespace System.Routes.API {
 
                     let check = match(pathParams);
 
+                    if (!check) {
+                        console.error('Request Not Implement');
+                    }
+
                     config['params'] = Object.values(check?.params);
                 }
 
                 /**
-                 * Require Http Controller
+                 * Require Http Contrcheckoller
                  */
                 let HttpController = Venida.import(
                     'Venida.'
@@ -82,7 +87,7 @@ namespace System.Routes.API {
 
                 if (Controller && typeof Controller[config?.func] == 'function') {
 
-                    await Controller[config?.func].apply(Controller, option?.params);
+                    await Controller[config?.func].apply(Controller, config?.params);
                 } else {
 
                     console.error('Controller not implements');

@@ -26,6 +26,16 @@
             Venida.Response.send(this.response, {data: dataExample});
         }
 
+        public async detail (id: any) {
+            
+            Venida.Response.send(this.response, {data: `Test detail controller: ${id}`})
+        }
+
+        public async doubleParams (username: string, id: any) {
+            
+            Venida.Response.send(this.response, {data: `Test doubleParams controller: ${username} ${id}`})
+        }
+
     }
  }
 

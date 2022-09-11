@@ -59,7 +59,7 @@ namespace Routes {
                     {
                         method: 'get',
                         controller: 'App.Http.Controllers.Api.V1.UserController',
-                        fn: 'index',
+                        fn: 'doubleParams',
                         path: '/user',
                         alias: '/user',
                         query: '/:username/:class',
