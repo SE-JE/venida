@@ -28,6 +28,8 @@ namespace Config {
                     environment: process.env.APP_MODE ?? 'development'
                 },
 
+                defaultOutput: 'json',
+
                 controller: 'App.Http.Controllers',
                 model: 'App.Models',
                 hooks: 'App.Http.Hooks',

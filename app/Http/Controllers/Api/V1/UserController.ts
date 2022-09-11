@@ -6,12 +6,24 @@
 
  namespace App.Http.Controllers.Api.V1 {
 
-    export class UserController {
+    const BaseController = Venida.import('Venida.system.Core.Base.Controller');
 
+    export class UserController extends BaseController {
+
+        constructor (request: any, response: any) {
+            super(request, response);
+        }
 
         public async index () {
 
             console.log('Called UserController');
+
+            let dataExample = {
+                name: 'Venida Platform',
+                status: 'Development'
+            }
+
+            Venida.Response.send(this.response, {data: dataExample});
         }
 
     }

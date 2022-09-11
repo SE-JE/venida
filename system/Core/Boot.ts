@@ -15,6 +15,8 @@ Venida.define('Route', Venida.import('Venida.system.Handler.Route'));
 
 Venida.define('Security', Venida.import('Venida.system.Core.Security'));
 
+Venida.define('Response', Venida.import('Venida.system.Handler.Response'));
+
 
 /**
  * Init Fastfy as Venida Web Server

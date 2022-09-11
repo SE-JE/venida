@@ -10,6 +10,11 @@ namespace App.Http.Hooks {
 
         public async handler (request: any, response: any) {
 
+            /**
+             * Fill request time for count the execute time
+             */
+            Venida.Request.requestTime = Math.floor(Date.now()/1000);
+
             // do something..
         }
     }
