@@ -12,9 +12,14 @@
         message: string
     }
 
-    export class Response {
+    interface optionError {
+        responseCode: number,
+        success: boolean,
+        message: string,
+        error?: any
+    }
 
-        private readonly responseCode: number;
+    export class Response {
 
         private readonly responseContent: {[key: string]: any};
 
@@ -22,8 +27,6 @@
          * Constructor method
          */
         constructor () {
-
-            this.responseCode = 200;
 
             this.responseContent = {
 
@@ -77,6 +80,18 @@
             response.send(responseContent);
         }
 
+        public sendError (response: {[key: string]: any}, errorCode: string, options: any = null) {
+
+            response.output = Venida.Config.get('defaultOutput');
+
+            let responseContent: any = this.onError(errorCode, options);
+
+            responseContent['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
+
+            response.status(responseContent.responseCode);
+            response.send(responseContent);
+        }
+
         /**
          * Format Response on Success
          * 
@@ -101,6 +116,41 @@
         }
 
         /**
+         * Format Response on Error/Failed
+         * 
+         * @param errorCode 
+         * @param options
+         */
+        private onError (errorCode: string = "INTERNAL_SERVER_ERROR", options: optionError) {
+
+            let responseContent = this.responseContent;
+
+            responseContent.responseCode = 500;
+            responseContent.success = false;
+            responseContent.message = 'Yout request failed.';
+            responseContent.error = null;
+            delete responseContent['value'];
+
+            responseContent.context = Venida.Utils.String.generateRandomString(32);
+
+            let errorDeclaration = this.getError(errorCode);
+
+            if (errorDeclaration) {
+                responseContent['message'] = errorDeclaration?.message;
+                responseContent['responseCode'] = errorDeclaration?.responseCode;
+            }
+
+            if (options) {
+                responseContent['message'] = options?.message ?? responseContent['message'];
+                responseContent['responseCode'] = options?.responseCode ?? responseContent['responseCode'];
+                responseContent['success'] = options?.success ?? responseContent['success'];
+                responseContent['error'] = options?.error ?? responseContent['error'];
+            }
+            
+            return responseContent;
+        }
+
+        /**
          * Basic Venida response setter
          */
 
@@ -120,6 +170,29 @@
         public setMessage (message: string) {
             this.responseContent['message'] = message;
             return this;
+        }
+
+        /**
+         * Basic Venida response getter
+         */
+
+        public getError (errorCode: string) {
+
+            let ErrorJson = Venida.import('Venida.error-declaration');
+
+            let error = ErrorJson[errorCode];
+
+            if (!error) {
+                error = ErrorJson['INTERNAL_SERVER_ERROR'];
+                error['message'] = `Unknown error code ${errorCode} at error declaration.`;
+            }
+
+            if (error && error?.isActive != 1) {
+                error = ErrorJson['INTERNAL_SERVER_ERROR'];
+                error['message'] = `Error type ${errorCode} doesn't activated yet.`;
+            }
+
+            return error;
         }
     }
 }

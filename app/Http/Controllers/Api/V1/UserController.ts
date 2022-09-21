@@ -28,7 +28,19 @@
 
         public async detail (id: any) {
             
-            Venida.Response.send(this.response, {data: `Test detail controller: ${id}`})
+            // Venida.Response.send(this.response, {data: `Test detail controller: ${id}`})
+            Venida.Response.sendError(this.response, 'VALIDATION_ERROR', {
+                error: [
+                    {
+                        field: 'name',
+                        message: 'is exist'
+                    },
+                    {
+                        field: 'email',
+                        message: 'not match with pattern'
+                    }
+                ]
+            });
         }
 
         public async doubleParams (username: string, id: any) {

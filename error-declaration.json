@@ -1,0 +1,30 @@
+{
+    "INTERNAL_SERVER_ERROR": {
+        "identifier": "INTERNAL_SERVER_ERROR",
+        "label": "Internal Server Error",
+        "message": "Internal Server Error",
+        "responseCode": 500,
+        "isActive": 1
+    },
+    "ROUTE_NOT_FOUND": {
+        "identifier": "ROUTE_NOT_FOUND",
+        "label": "Route Not Found",
+        "message": "Route Not Found",
+        "responseCode": 404,
+        "isActive": 1
+    },
+    "QUERY_ERROR": {
+        "identifier": "QUERY_ERROR",
+        "label": "Query Error",
+        "message": "Query Error",
+        "responseCode": 500,
+        "isActive": 0
+    },
+    "VALIDATION_ERROR": {
+        "identifier": "VALIDATION_ERROR",
+        "label": "Validation Error",
+        "message": "Validation Error",
+        "responseCode": 422,
+        "isActive": 1
+    }
+}
