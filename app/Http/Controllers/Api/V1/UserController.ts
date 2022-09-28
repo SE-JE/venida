@@ -23,7 +23,10 @@
                 status: 'Development'
             }
 
-            Venida.Response.send(this.response, {data: dataExample});
+
+            Venida.Response.exception('VALIDATION_ERROR', 'Failed to update');
+            // Venida.Response.send(this.response, {data: dataExample});
+            console.log('bottom exception does not execute');
         }
 
         public async detail (id: any) {

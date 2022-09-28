@@ -23,6 +23,8 @@
 
         private readonly responseContent: {[key: string]: any};
 
+        private readonly errorException: {[key: string]: any};
+
         /**
          * Constructor method
          */
@@ -48,7 +50,7 @@
                 /**
                  * Application environment
                  */
-                environment: Venida.Config.server?.environment,
+                environment: Venida.Config.get('server')['environment'],
 
                 /**
                  * Default success status
@@ -64,6 +66,44 @@
                  * Response data
                  */
                 value: null
+            }
+
+            this.errorException = {
+             
+                /**
+                 * Default response code
+                 */
+                responseCode: 500,
+ 
+                 /**
+                  * Execute time
+                  */
+                execTime: 0,
+ 
+                 /**
+                  * Application environment
+                  */
+                environment: Venida.Config.get('server')['environment'],
+ 
+                 /**
+                  * Default success status
+                  */
+                success: false,
+
+                /**
+                 * Error Identifier
+                 */
+                identifier: 'Internal Server Error',
+ 
+                 /**
+                  * Default success message
+                  */
+                message: 'Your request failed.',
+
+                 /**
+                  * Default error exception
+                  */
+                error: null,
             }
         }
 
@@ -90,6 +130,21 @@
 
             response.status(responseContent.responseCode);
             response.send(responseContent);
+        }
+
+        public exception (errorCode: string, error: any, options: any = null) {
+
+            let err: any = this.errorException;
+
+            let errorDeclaration = this.getError(errorCode);
+
+            err['responseCode'] = errorDeclaration?.responseCode;
+            err['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
+            err['identifier'] = errorDeclaration?.message;
+            err['message'] = error ?? errorDeclaration?.message;
+            err['error'] = options;
+
+            throw err;
         }
 
         /**
@@ -148,6 +203,25 @@
             }
             
             return responseContent;
+        }
+
+        public initException () {
+
+            process.on('unhandledRejection', (reason, promise) => {
+                console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+            });
+
+            Venida.Server.setErrorHandler((err: any, req: any, res: any) => {
+
+                let response = this.errorException;
+
+                response['error'] = err?.error ? err?.error : null;
+                response['message'] = err?.message;
+                response['responseCode'] = err?.responseCode || 500;
+
+                res.status(response?.responseCode);
+                res.send(response);
+            });
         }
 
         /**

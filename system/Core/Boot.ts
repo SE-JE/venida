@@ -26,6 +26,11 @@ Venida.Server = new Fastify({
 });
 
 /**
+ * Initial response exception
+ */
+Venida.Response.initException();
+
+/**
  * Register Hooks
  */
 Venida.Server.addHook('onRequest', async (request: any, response: any) => {
