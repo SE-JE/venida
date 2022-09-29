@@ -57,11 +57,11 @@ namespace Routes {
                         requestAuth: 0
                     },
                     {
-                        method: 'get',
+                        method: 'post',
                         controller: 'App.Http.Controllers.Api.V1.UserController',
                         fn: 'doubleParams',
-                        path: '/user',
-                        alias: '/user',
+                        path: '/user/doubleParams',
+                        alias: '/user/doubleParams',
                         query: '/:username/:class',
                         requestAuth: 0
                     },

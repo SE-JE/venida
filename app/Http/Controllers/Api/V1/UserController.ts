@@ -47,6 +47,13 @@
         }
 
         public async doubleParams (username: string, id: any) {
+
+            let requests = this.request.body;
+
+            console.log('body parser', requests);
+
+            console.log(requests['user']);
+            
             
             Venida.Response.send(this.response, {data: `Test doubleParams controller: ${username} ${id}`})
         }

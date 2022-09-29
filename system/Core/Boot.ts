@@ -50,6 +50,20 @@ Venida.Server.addHook('preValidation', async (request: any, response: any) => {
 });
 
 /**
+ * Register the Fastify packages
+ */
+Venida.Server.register(Venida.import('@fastify/formbody', false));
+
+Venida.Server.register(Venida.import('@fastify/helmet', false), {
+    contentSecurityPolicy: false
+});
+
+Venida.Server.register(Venida.import('@fastify/compress', false), {
+    global: true,
+    encodings: ['gzip']
+});
+
+/**
  * Initial Venida Utils
  */
 Venida.define('Utils', Venida.class('Venida.config.util'));

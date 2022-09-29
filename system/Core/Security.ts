@@ -127,7 +127,7 @@ namespace System.Core {
                                             && route?.query != null;
                                 } else {
                                     console.log('Route not found: additionalWildcardParams (endpoint in endpoint2)');
-                                    Venida.Response.exception('ROUTE_NOT_FOUND');
+                                    // Venida.Response.exception('ROUTE_NOT_FOUND');
                                 }
                             } else {
 
