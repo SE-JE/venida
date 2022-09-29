@@ -78,19 +78,30 @@ namespace System.Routes.API {
                 /**
                  * Require Http Contrcheckoller
                  */
-                let HttpController = Venida.import(
-                    'Venida.'
-                    .concat(route?.controller)
-                );
+                let HttpController: any;
+                
+                try {
+                    HttpController = Venida.import(
+                        'Venida.'
+                        .concat(route?.controller)
+                    );
+                } catch (error: any) {
+                    Venida.Response.exception('ROUTE_NOT_FOUND');
+                }
 
                 let Controller = new HttpController(req, res);
 
                 if (Controller && typeof Controller[config?.func] == 'function') {
 
-                    await Controller[config?.func].apply(Controller, config?.params);
+                    try {
+                        await Controller[config?.func].apply(Controller, config?.params);
+                    } catch (err: any) {
+                        Venida.Response.exception('ROUTE_NOT_FOUND');
+                    }
                 } else {
 
                     console.error('Controller not implements');
+                    Venida.Response.exception('ROUTE_NOT_FOUND');
                 }
 
 
@@ -98,6 +109,7 @@ namespace System.Routes.API {
                 /**
                  * Request not implement
                  */
+                Venida.Response.exception('ROUTE_NOT_FOUND');
                 return false;
             }
         });

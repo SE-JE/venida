@@ -95,6 +95,7 @@ namespace System.Core {
                                                 && route?.query != null;
                                     } else {
                                         console.log('Route not found: additionalWildcardParams');
+                                        Venida.Response.exception('ROUTE_NOT_FOUND');
                                     }
                                 }
                             } else {                                
@@ -126,13 +127,10 @@ namespace System.Core {
                                             && route?.query != null;
                                 } else {
                                     console.log('Route not found: additionalWildcardParams (endpoint in endpoint2)');
+                                    Venida.Response.exception('ROUTE_NOT_FOUND');
                                 }
                             } else {
 
-                                // returnValue = route?.method.toUpperCase() == Venida.Request.get(req, 'method')
-                                //         && route?.alias == endpoint
-                                //         || route?.alias == endpoint2
-                                //         && route?.paramlength == 0;
                                 console.log('(endpoint in endpoint2) paramLength 0');
                             }
                         }
@@ -156,85 +154,7 @@ namespace System.Core {
                  * Request not implement
                  */
                 console.log('Route not found');
-            }
-
-            return fetchRoute;
-        }
-
-        public async old_validateRoute (req: any, res: any) {
-
-            /**
-             * Route Structure
-             */
-            let separator = '/';
-
-            let requestUri = Venida.Route.requestURI(req);
-
-            let routerData = Venida.import('Venida.routes.Api')();
-
-            let pathParams = Venida.Request.get(req, 'params')['*'].replace('/index', '');
-
-            let params = pathParams.split(separator);
-
-            let module = params[0];
-
-            let func = params[1];
-
-            let endpoint = separator.concat(module);
-            let endpoint2: any = null;
-
-            let paramLength = 0;
-            let paramLength2 = 0;
-
-            if (params) {
-                paramLength = params.length - 1;
-                paramLength2 = params.length - 2;
-            }
-
-            if (func) {
-                endpoint2 = endpoint.concat(separator, func);
-            }
-        
-            console.log('module:', module);
-            console.log('function:', func);
-            console.log('endpoint:', endpoint);
-            console.log('endpoint2', endpoint2);
-            console.log('paramLength', paramLength);
-            console.log('paramLength2', paramLength2);
-
-            console.log('===========');
-            console.log('endpoint2 or 1', endpoint2 ? endpoint2 : endpoint);
-            
-
-            let fetchRoute: any;
-            let fetchRouterGroupData: any;
-
-            let flatten = Venida.import('flat', true);
-
-            let flattenRouter = flatten(routerData);
-
-            let prefixRequest: any;
-            let aliasRequest: any;
-            let pathRequest: any;
-
-            for (let key in flattenRouter) {
-
-                if (key.includes('routes')) {
-
-                    
-                }
-            }
-            
-            console.log('routeGroup', fetchRouterGroupData);
-            console.log('checkRoute', fetchRoute);
-            console.log('prefixReq', prefixRequest);
-            
-            
-            if (!fetchRoute) {
-                /**
-                 * Request not implement
-                 */
-                console.log('Route not found');
+                Venida.Response.exception('ROUTE_NOT_FOUND');
             }
 
             return fetchRoute;
