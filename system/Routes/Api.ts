@@ -93,11 +93,7 @@ namespace System.Routes.API {
 
                 if (Controller && typeof Controller[config?.func] == 'function') {
 
-                    try {
-                        await Controller[config?.func].apply(Controller, config?.params);
-                    } catch (err: any) {
-                        Venida.Response.exception('ROUTE_NOT_FOUND');
-                    }
+                    await Controller[config?.func].apply(Controller, config?.params);
                 } else {
 
                     console.error('Controller not implements');

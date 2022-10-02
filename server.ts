@@ -17,6 +17,8 @@ Venida.define('Config', Venida.class('Venida.config.config'));
 
 Venida.define('RouterConfig', Venida.class('Venida.config.router'));
 
+Venida.define('DatabaseConfig', Venida.class('Venida.config.database'));
+
 
 /**
  * Web Server Initialize
