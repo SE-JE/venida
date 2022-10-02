@@ -4,24 +4,33 @@
  * SEJE - Digital
  */
 
- namespace System.Core.Base {
+namespace System.Core.Base {
 
-    export class Controller {
+    export class Model {
 
-        public request: any = {};
+        public DB: any;
 
-        public response: any = {};
+        public init: (request: any, response: any) => any = () => {};
 
         public load: (moduleName: any) => any = () => {};
 
         /**
          * Constructor method
          */
-        public constructor (req: any, res: any) {
+        public constructor () {
 
-            this.request = req;
+            let me = this;
 
-            this.response = res;
+            this.init = () => {
+
+                let createConnection = Venida.Datasource;
+
+                if (!createConnection) {
+                    Venida.Response.exception('INTERNAL_SERVER_ERROR', 'Failed to create connection at primary DB');
+                }
+
+                this.DB = createConnection;
+            }
 
             this.load = async (modelName: any) => {
 
@@ -44,4 +53,4 @@
     }
 }
 
-module.exports = System.Core.Base.Controller;
+module.exports = System.Core.Base.Model;

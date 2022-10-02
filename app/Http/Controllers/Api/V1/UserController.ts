@@ -23,10 +23,11 @@
                 status: 'Development'
             }
 
+            let UserModel = await this.load('User');
 
-            Venida.Response.exception('VALIDATION_ERROR', 'Failed to update');
-            // Venida.Response.send(this.response, {data: dataExample});
-            console.log('bottom exception does not execute');
+            let result = await UserModel.getAll();
+
+            Venida.Response.send(this.response, {data: result, total: result.length});
         }
 
         public async detail (id: any) {
