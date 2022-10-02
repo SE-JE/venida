@@ -4,34 +4,29 @@
  * SEJE - Digital
  */
 
- namespace App.Http.Controllers.Api.V1 {
+namespace App.Http.Controllers.Api.V1 {
 
     const BaseController = Venida.import('Venida.system.Core.Base.Controller');
 
     export class UserController extends BaseController {
 
-        constructor (request: any, response: any) {
+        constructor(request: any, response: any) {
             super(request, response);
         }
 
-        public async index () {
+        public async index() {
+            let UserService = await this.service('UserService');
 
-            console.log('Called UserController');
+            let { query } = this.request;
+            let limit = query.limit ? parseInt(query.limit) : 10;
+            let page = query.page ? parseInt(query.page) : 1;
+            let search = query.search ?? '';
+            let result = await UserService.paginate(page, limit, search);
 
-            let dataExample = {
-                name: 'Venida Platform',
-                status: 'Development'
-            }
-
-            let UserModel = await this.load('User');
-
-            let result = await UserModel.getAll();
-
-            Venida.Response.send(this.response, {data: result, total: result.length});
+            return Venida.Response.send(this.response, result);
         }
 
-        public async detail (id: any) {
-            
+        public async detail(id: any) {
             // Venida.Response.send(this.response, {data: `Test detail controller: ${id}`})
             Venida.Response.sendError(this.response, 'VALIDATION_ERROR', {
                 error: [
@@ -47,13 +42,13 @@
             });
         }
 
-        public async doubleParams (username: string, id: any) {
+        public async doubleParams(username: string, id: any) {
 
             let requests = this.request.body;
 
             console.log('body parser', requests);
 
-            let dataParams = {data: `Test doubleParams controller: ${username} ${id}`};
+            let dataParams = { data: `Test doubleParams controller: ${username} ${id}` };
 
             let result = await Venida.Datasource.select('*').from('siteoperator').limit(100)
                 .catch((err: any) => {
@@ -69,17 +64,17 @@
                 Venida.Response.exception('INTERNAL_SERVER_ERROR', 'Failed to create connection');
             }
 
-            let result2 = await newConnection.select('*').from('users')
+            let result2 = await newConnection.select('*').from('users').limit(60)
                 .catch((err: any) => {
                     console.log(err);
                     Venida.Response.exception('QUERY_ERROR', 'Failed to query');
                 })
-            
-            
-            Venida.Response.send(this.response, result2);
+
+
+            return Venida.Response.send(this.response, result2);
         }
 
     }
- }
+}
 
- module.exports = App.Http.Controllers.Api.V1.UserController;
+module.exports = App.Http.Controllers.Api.V1.UserController;

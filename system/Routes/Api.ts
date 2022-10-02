@@ -76,7 +76,7 @@ namespace System.Routes.API {
                 }
 
                 /**
-                 * Require Http Contrcheckoller
+                 * Require Http Controller
                  */
                 let HttpController: any;
                 
