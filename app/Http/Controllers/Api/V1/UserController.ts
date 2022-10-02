@@ -52,10 +52,30 @@
 
             console.log('body parser', requests);
 
-            console.log(requests['user']);
+            let dataParams = {data: `Test doubleParams controller: ${username} ${id}`};
+
+            let result = await Venida.Datasource.select('*').from('siteoperator').limit(100)
+                .catch((err: any) => {
+                    console.log(err);
+                    Venida.Response.exception('QUERY_ERROR', 'Failed to query');
+                });
+
+            console.log(Venida.DatabaseConfig.get('secondaryConnection')['mysql']);
+
+            let newConnection = await Venida.Datasource.createConnection(Venida.DatabaseConfig.get('secondaryConnection')['mysql']);
+
+            if (!newConnection) {
+                Venida.Response.exception('INTERNAL_SERVER_ERROR', 'Failed to create connection');
+            }
+
+            let result2 = await newConnection.select('*').from('users')
+                .catch((err: any) => {
+                    console.log(err);
+                    Venida.Response.exception('QUERY_ERROR', 'Failed to query');
+                })
             
             
-            Venida.Response.send(this.response, {data: `Test doubleParams controller: ${username} ${id}`})
+            Venida.Response.send(this.response, result2);
         }
 
     }

@@ -17,6 +17,11 @@ Venida.define('Security', Venida.import('Venida.system.Core.Security'));
 
 Venida.define('Response', Venida.import('Venida.system.Handler.Response'));
 
+/**
+ * Datasource initializer
+ */
+Venida.define('Datasource', Venida.import('Venida.system.Core.Datasource'));
+
 
 /**
  * Init Fastfy as Venida Web Server
@@ -52,13 +57,13 @@ Venida.Server.addHook('preValidation', async (request: any, response: any) => {
 /**
  * Register the Fastify packages
  */
-Venida.Server.register(Venida.import('@fastify/formbody', false));
+Venida.Server.register(Venida.import('@fastify/formbody', true));
 
-Venida.Server.register(Venida.import('@fastify/helmet', false), {
+Venida.Server.register(Venida.import('@fastify/helmet', true), {
     contentSecurityPolicy: false
 });
 
-Venida.Server.register(Venida.import('@fastify/compress', false), {
+Venida.Server.register(Venida.import('@fastify/compress', true), {
     global: true,
     encodings: ['gzip']
 });
