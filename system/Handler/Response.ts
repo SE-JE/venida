@@ -117,7 +117,7 @@
             // Venida.Request.resetRequestTime();
 
             response.status(responseContent.responseCode);
-            response.send(responseContent);
+            return response.send(responseContent);
         }
 
         public sendError (response: {[key: string]: any}, errorCode: string, options: any = null) {
@@ -129,7 +129,7 @@
             responseContent['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
 
             response.status(responseContent.responseCode);
-            response.send(responseContent);
+            return response.send(responseContent);
         }
 
         public exception (errorCode: string, error: any, options: any = null) {
