@@ -12,32 +12,31 @@
 
         public response: any = {};
 
-        public load: (moduleName: any) => any = () => {};
+        public service: (moduleName: any) => any = () => {};
 
         /**
          * Constructor method
          */
         public constructor (req: any, res: any) {
-
             this.request = req;
 
             this.response = res;
 
-            this.load = async (modelName: any) => {
+            this.service = async (serviceName: any) => {
 
-                let pakcagePath = Venida.identifier.concat('.',
-                    Venida.Config.get('model'),
+                let packagePath = Venida.identifier.concat('.',
+                    Venida.Config.get('service'),
                     '.',
-                    modelName
+                    serviceName
                 );
 
-                let model = Venida.import(pakcagePath);
+                let service = Venida.import(packagePath);
 
-                model = new model();
+                service = new service();
 
-                await model.init();
+                await service;
 
-                return model;
+                return service;
             }
 
         }

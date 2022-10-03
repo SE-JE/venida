@@ -34,13 +34,13 @@ namespace System.Core.Base {
 
             this.load = async (modelName: any) => {
 
-                let pakcagePath = Venida.identifier.concat('.',
+                let packagePath = Venida.identifier.concat('.',
                     Venida.Config.get('model'),
                     '.',
                     modelName
                 );
 
-                let model = Venida.import(pakcagePath);
+                let model = Venida.import(packagePath);
 
                 model = new model();
 
