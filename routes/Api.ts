@@ -74,6 +74,15 @@ namespace Routes {
                         query: null,
                         requestAuth: 0
                     },
+                    {
+                        method: 'get',
+                        controller: 'App.Http.Controllers.Api.V1.UserController',
+                        fn: 'console',
+                        path: '/user/console',
+                        alias: '/user/console',
+                        query: null,
+                        requestAuth: 0
+                    },
                 ]
             }
         ];

@@ -14,6 +14,19 @@ namespace App.Http.Controllers.Api.V1 {
             super(request, response);
         }
 
+        public async console() {
+            // running console command
+            Venida.commandSilently('Venida.App.Console.Hello', ['--name=Venada', '--age=20']);
+
+            let response: string = await Venida.command('Venida.App.Console.Hello', {
+                'name': 'Venida',
+                '--age': 20,
+                '--skill': ['mancing', 'besbol']
+            }, true);
+
+            return Venida.Response.send(this.response, { data: response });
+        }
+
         public async index() {
             let UserService = await this.service('UserService');
 
