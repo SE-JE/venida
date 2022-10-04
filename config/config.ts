@@ -32,6 +32,7 @@ namespace Config {
 
                 controller: 'App.Http.Controllers',
                 model: 'App.Models',
+                console: 'App.Console',
                 service: 'App.Services',
                 hooks: 'App.Http.Hooks',
                 applicationPath: '/app',
