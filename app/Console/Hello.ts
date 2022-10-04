@@ -8,7 +8,7 @@ namespace App.Console {
     const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
 
     export class Hello extends BaseConsole {
-        protected signature: string = '{name:The name of user="wildan afbidal"} {--age} {--skill|s=*}';
+        protected signature: string = '{name:The name of user="wildan afbidal"} {--age: Age of user} {--skill|s: Skills of user=*}';
         protected description: string = 'This is a sample console command';
 
         handle = async () => {

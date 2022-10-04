@@ -50,8 +50,19 @@ namespace System.Core.Base {
          */
         protected description: string = '';
 
+
+        private isThrowError: boolean = false;
+        private msgThrowError: string = '';
+
         private arguments: any = [];
-        private options: any = [];
+        private options: any = [{
+            name: '--help',
+            description: 'Show help',
+            required: false,
+            default: false,
+            shorthand: '-h',
+            value: false
+        }];
 
         public handle: () => any = async () => { };
         public beforeRun: () => any = async () => { };
@@ -59,6 +70,7 @@ namespace System.Core.Base {
         public afterRun: () => any = async () => { };
         protected argument = (key: string, valOnly: boolean) => { }
         protected option = (key: string, valOnly: boolean) => { }
+        protected showHelp = () => { }
 
 
         constructor() {
@@ -78,6 +90,18 @@ namespace System.Core.Base {
 
                 this.arguments = args;
                 this.options = opts;
+
+                // if in argv have --help or -h, show help
+                if (argv.includes('--help') || argv.includes('-h')) {
+                    this.showHelp();
+                    return;
+                }
+
+                // check isThrowError
+                if (this.isThrowError) {
+                    console.log(this.msgThrowError);
+                    process.exit(1);
+                }
 
                 // parsing options from signature
                 await this.beforeRun();
@@ -111,6 +135,80 @@ namespace System.Core.Base {
                     return defaultValue;
                 }
             }
+
+            this.showHelp = () => {
+                let template: string = '';
+                let optionString: string = '';
+                let argumentString: string = '';
+
+                let listOptions: OptionInterface[] = this.options;
+
+                // add help option
+                listOptions.push({
+                    name: '--help',
+                    description: 'Show help',
+                    required: false,
+                    default: false,
+                    shorthand: '-h',
+                    value: false
+                });
+
+                // remove shorthand
+                for (let key in listOptions) {
+                    if (listOptions[key].shorthand) {
+                        delete listOptions[listOptions[key].shorthand];
+                    }
+                }
+
+                // show description of arguments & options
+                for (let key in listOptions) {
+                    let item = this.options[key];
+                    let name = item.name;
+                    let description = item.description;
+                    let required = item.required;
+                    let defaultVal = item.default;
+                    let shorthand = item.shorthand;
+
+                    if (shorthand) name = `${name}\t| ${shorthand} \t`;
+                    else name = `${name}\t   \t`;
+
+                    if (defaultVal) {
+                        if (defaultVal == '*') defaultVal = 'multiple';
+                        description = `${description} (default: ${defaultVal})`;
+                    }
+
+                    if (!required) description = `${description} (optional)`;
+                    else description = `${description} (required)`;
+
+                    optionString += `   ${name} \t\t ${description} \r\n`;
+                }
+
+                for (let key in this.arguments) {
+                    let item = this.arguments[key];
+                    let name = item.name;
+                    let description = item.description;
+                    let required = item.required;
+                    let defaultVal = item.default;
+
+                    if (defaultVal) {
+                        if (defaultVal == '*') defaultVal = 'multiple';
+                        description = `${description} (default: ${defaultVal})`;
+                    }
+
+                    if (!required) description = `${description} (optional)`;
+                    else description = `${description} (required)`;
+
+                    argumentString += `   ${name} \t\t\t\t ${description} \r\n`;
+                }
+
+                template = ` ${this.description} \r\n\r\n`;
+                template += ` Arguments: \r\n`;
+                template += argumentString;
+                template += ` Options: \r\n`;
+                template += optionString;
+
+                console.log(template);
+            }
         }
 
         /**
@@ -120,15 +218,19 @@ namespace System.Core.Base {
          * @description Group Argv value by type (argument or option)
          **/
         private groupArgv = (argv: any) => {
-            let args = [];
-            let opts = [];
+            let args: any[] = [];
+            let opts: any[] = [];
 
             for (let i = 0; i < argv.length; i++) {
                 let arg = argv[i];
-                if (arg.startsWith('--')) {
-                    let splitArg = arg.split('=');
-                    let key = splitArg[0].replace('--', '').trim();
-                    let value = splitArg[1].trim().replace(/\"/g, '').replace(/\'/g, '');
+                if (arg.startsWith('--') || arg.startsWith('-')) {
+                    let splitArg: any = arg.split('=');
+                    let key: string = splitArg[0].replace('--', '').replace('-', '').trim();
+                    let value: any = true;
+
+                    if (splitArg.length > 1) {
+                        value = splitArg[1].trim().replace(/\"/g, '').replace(/\'/g, '');
+                    }
 
                     // if opts key already exists, then push value to array
                     if (opts[key]) {
@@ -177,7 +279,7 @@ namespace System.Core.Base {
                 };
 
                 item = item[1].trim();
-                let isArgument = item.indexOf('--') == -1;
+                let isArgument = item.indexOf('--') == -1 || item.indexOf('-') == -1;
 
                 // start with --
                 if (!isArgument) {
@@ -302,11 +404,9 @@ namespace System.Core.Base {
         }
 
         private throw = (message: string): void => {
-            // set color to red
-            console.log('\x1b[31m%s\x1b[0m', message);
-            // reset color to default
-            console.log('\x1b[0m');
-            process.exit(1);
+            // show error message with red color
+            this.msgThrowError = '\x1b[31m%s\x1b[0m' + message + '\x1b[0m';
+            this.isThrowError = true;
         }
 
     }
