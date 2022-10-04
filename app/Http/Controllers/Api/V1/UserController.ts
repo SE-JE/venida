@@ -15,7 +15,8 @@ namespace App.Http.Controllers.Api.V1 {
         }
 
         public async index() {
-            let UserService = await this.service('UserService');
+
+            let UserService = await this.load('UserService', 'service');
 
             let { query } = this.request;
             let limit = query.limit ? parseInt(query.limit) : 10;
@@ -71,7 +72,7 @@ namespace App.Http.Controllers.Api.V1 {
                 })
 
 
-            return Venida.Response.send(this.response, result2);
+            return Venida.Response.send(this.response, result);
         }
 
     }

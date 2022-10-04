@@ -9,7 +9,7 @@ namespace App.Services {
      * declare BaseService
      * @object BaseService
      */
-    const BaseService = Venida.import('Venida.System.Core.Base.Service');
+    const BaseService = Venida.import('Venida.system.Core.Base.Service');
 
     /**
      * declare User Service
@@ -28,6 +28,7 @@ namespace App.Services {
          * @returns object meta
          */
         private generatePaginationMeta(limit: number, page: number, offset: number, total: number): any {
+            
             let totalPage = 0;
 
             if (total > 0) {
@@ -64,11 +65,13 @@ namespace App.Services {
          * @returns
          */
         public async paginate(page: number, limit: number, search: string) {
+
             let user = await this.model('User');
             let offset = (page - 1) * limit;
 
-            let { data, total } = await user.paginate(offset, limit);
+            let { data, total } = await user.paginate(offset, limit, search ?? null);
             let meta = this.generatePaginationMeta(limit, page, offset, total);
+
             return {
                 data,
                 meta
