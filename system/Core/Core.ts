@@ -28,7 +28,26 @@ namespace System.Core {
          * Check Local Package Exist
          */
         private exist: (className: string) => any = () => { };
-        private command: (commandName: string, argv?: any) => any = () => { };
+
+        /**
+         * Running Command Line
+         * @param commandName The name of command
+         * @param argv The arguments of command
+         * @param withReturnValue Return the value of command or not
+         * @param fromTerminal Run from terminal or not
+         * @returns {Promise<any>}
+         */
+        private command: (commandName: string, argv?: any, withReturnValue?: boolean, fromTerminal?: boolean) => any = () => { };
+
+        /**
+         * Running Command Line Silently
+         * @param commandName The name of command
+         * @param argv The arguments of command
+         * @param withReturnValue Return the value of command or not
+         * @param fromTerminal Run from terminal or not
+         * @returns {Promise<any>}
+         */
+        private commandSilently: (commandName: string, argv?: any, fromTerminal?: boolean) => any = () => { };
 
 
         /**
@@ -42,11 +61,20 @@ namespace System.Core {
                     return this.path;
                 }
 
-                this.command = (commandName: string, argv?: any) => {
+                this.command = (commandName: string, argv?: any, withReturnValue: boolean = false, fromTerminal: boolean = false) => {
                     let command = this.import(commandName, false);
                     command = new command();
-                    console.log(`Running command: ${commandName}`);
-                    return command.run(argv);
+                    console.log(`Running command: ${commandName}\r\n`);
+                    if (!fromTerminal) {
+                        // append 3 temporary arguments in 1 array
+                        argv = ['node', 'venida', 'name'].concat(argv);
+                    }
+                    return command.run(argv, withReturnValue);
+                }
+
+                this.commandSilently = (commandName: string, argv?: any, fromTerminal: boolean = false) => {
+                    this.command(commandName, argv, true, fromTerminal);
+                    return;
                 }
 
                 this.exist = (pkg: any) => {

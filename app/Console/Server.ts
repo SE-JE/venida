@@ -7,8 +7,8 @@
 namespace App.Console {
     const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
     export class Server extends BaseConsole {
-        protected signature: string = 'serve {--host=} {--port=}';
-        protected description: string = 'This is a sample console command';
+        protected signature: string = 'serve {--port:running port=} {--node:name of the node=}';
+        protected description: string = 'Running Venida Server';
 
         handle = async () => {
             /**
@@ -21,15 +21,16 @@ namespace App.Console {
              */
             Venida.class('Venida.system.Handler.Route').initRoute();
 
-            const nodePort = Venida.Config.get('server')['port'];
-            const nodeName = Venida.Config.get('server')['name'];
+            const nodePort = this.option('port', Venida.Config.get('server')['port']);
+            const nodeName = this.option('node', Venida.Config.get('server')['name']);
 
             Server.listen({
                 port: nodePort
             })
-                .then((address: string) => console.log(`Node [${nodeName}] started on ${address}`))
+                .then((address: string) => this.print(`Node [${nodeName}] started on ${address}`))
                 .catch((err: string) => {
-                    console.log('Error starting server:', err);
+
+                    this.trow('Error starting server:', err);
                     process.exit(1);
                 });
         }

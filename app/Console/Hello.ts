@@ -12,11 +12,8 @@ namespace App.Console {
         protected description: string = 'This is a sample console command';
 
         handle = async () => {
-            console.log(`
-Hello World ${this.argument('name')}
-Your age is ${this.option('age', 0)}
-Your skill is ${this.option('skill', []).join(', ')}
-`);
+            let template = `Hello ${this.argument('name')}, your age is ${this.option('age')} and your skills are ${this.option('skill')}`;
+            this.print(template);
         }
     }
 }

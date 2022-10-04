@@ -25,7 +25,7 @@ let firstArgument = process.argv[2];
 
 // Assign serve to firstArgument if argument is not set
 if (!firstArgument) {
-    firstArgument = 'server';
+    firstArgument = 'list';
 }
 
 // replace : with space
@@ -41,7 +41,7 @@ firstArgument = firstArgument.split(' ').join('.');
 
 // check if command is exist
 if (Venida.exist(`Venida.App.Console.${firstArgument}`)) {
-    Venida.command(`Venida.App.Console.${firstArgument}`, process.argv);
+    Venida.command(`Venida.App.Console.${firstArgument}`, process.argv, false, true);
 }
 
 

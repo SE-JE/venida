@@ -54,6 +54,9 @@ namespace System.Core.Base {
         private isThrowError: boolean = false;
         private msgThrowError: string = '';
 
+        private msgPrint: string = '';
+        private withReturnValue: boolean = false;
+
         private arguments: any = [];
         private options: any = [{
             name: '--help',
@@ -74,7 +77,8 @@ namespace System.Core.Base {
 
 
         constructor() {
-            this.run = async (argv: any) => {
+            this.run = async (argv: any, withReturnValue: boolean = false) => {
+                this.withReturnValue = withReturnValue;
                 // parsing arguments & options from signature
                 let signature = this.signature.matchAll(/{([\w\s\-\=\?\:\|\'\"\*]+)}/g);
 
@@ -84,7 +88,59 @@ namespace System.Core.Base {
                  * 2 = file
                  * 3 = command
                  */
-                argv = argv.slice(3);
+                // if argv is array, then we will parse it
+                if (Array.isArray(argv)) {
+                    argv = argv.slice(3);
+                } else {
+                    argv = [];
+                }
+
+
+                // if argv is object, then convert to array
+                if (argv.length == 1 && typeof argv[0] == 'object') {
+                    argv = argv[0];
+                    // loop all argv
+                    let argvArray: any = [];
+                    for (let key in argv) {
+                        let value: any = argv[key];
+
+                        if (typeof value === 'boolean') {
+                            if (key.startsWith('--')) {
+                                argvArray.push(key);
+                            }
+                        } else if (typeof value === 'string') {
+                            if (key.startsWith('--')) {
+                                argvArray.push(`${key}=${value}`);
+                            } else {
+                                argvArray.push(value);
+                            }
+                        } else if (typeof value === 'number') {
+                            if (key.startsWith('--')) {
+                                argvArray.push(`${key}=${value}`);
+                            } else {
+                                argvArray.push(value);
+                            }
+                        } else if (typeof value === 'object') {
+                            if (value instanceof Array) {
+                                for (let val of value) {
+                                    if (key.startsWith('--')) {
+                                        argvArray.push(`${key}=${val}`);
+                                    } else {
+                                        argvArray.push(val);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (key.startsWith('--')) {
+                                argvArray.push(`${key}=${value}`);
+                            } else {
+                                argvArray.push(value);
+                            }
+                        }
+                    }
+
+                    argv = argvArray;
+                }
 
                 let { args, opts } = this.parseSignature(signature, argv);
 
@@ -97,16 +153,39 @@ namespace System.Core.Base {
                     return;
                 }
 
-                // check isThrowError
+                // check isThrowError argument & option
                 if (this.isThrowError) {
-                    console.log(this.msgThrowError);
-                    process.exit(1);
+                    // change color to red
+                    if (this.withReturnValue) {
+                        return `${this.msgThrowError}`;
+                    } else {
+                        console.log(this.msgThrowError);
+                        return;
+                    }
                 }
 
                 // parsing options from signature
                 await this.beforeRun();
                 await this.handle();
                 await this.afterRun();
+
+                // check isThrowError for user program
+                if (this.isThrowError) {
+                    // change color to red
+                    if (this.withReturnValue) {
+                        return `${this.msgThrowError}`;
+                    } else {
+                        console.log(this.msgThrowError);
+                        return;
+                    }
+                }
+
+                if (this.withReturnValue) {
+                    return this.msgPrint;
+                } else {
+                    console.log(this.msgPrint);
+                    return;
+                }
             }
 
             this.argument = (key: any, defaultValue: any = null) => {
@@ -169,8 +248,8 @@ namespace System.Core.Base {
                     let defaultVal = item.default;
                     let shorthand = item.shorthand;
 
-                    if (shorthand) name = `${name}\t| ${shorthand} \t`;
-                    else name = `${name}\t   \t`;
+                    if (shorthand) name = `${name} | ${shorthand.padEnd(10)}`;
+                    else name = `${name.padEnd(10)}`;
 
                     if (defaultVal) {
                         if (defaultVal == '*') defaultVal = 'multiple';
@@ -180,7 +259,7 @@ namespace System.Core.Base {
                     if (!required) description = `${description} (optional)`;
                     else description = `${description} (required)`;
 
-                    optionString += `   ${name} \t\t ${description} \r\n`;
+                    optionString += `   ${name.padEnd(20)} ${description} \r\n`;
                 }
 
                 for (let key in this.arguments) {
@@ -198,16 +277,16 @@ namespace System.Core.Base {
                     if (!required) description = `${description} (optional)`;
                     else description = `${description} (required)`;
 
-                    argumentString += `   ${name} \t\t\t\t ${description} \r\n`;
+                    argumentString += `   ${name.padEnd(20)} ${description} \r\n`;
                 }
 
-                template = ` ${this.description} \r\n\r\n`;
+                template = ` Description: ${this.description} \r\n\r\n`;
                 template += ` Arguments: \r\n`;
                 template += argumentString;
                 template += ` Options: \r\n`;
                 template += optionString;
 
-                console.log(template);
+                this.print(template);
             }
         }
 
@@ -403,10 +482,15 @@ namespace System.Core.Base {
             };
         }
 
-        private throw = (message: string): void => {
+        protected throw = (message: string): void => {
             // show error message with red color
-            this.msgThrowError = '\x1b[31m%s\x1b[0m' + message + '\x1b[0m';
+            this.msgThrowError += message + '\n';
             this.isThrowError = true;
+        }
+
+        protected print = (message: string): void => {
+            // show message with green color
+            this.msgPrint += message + '\n';
         }
 
     }

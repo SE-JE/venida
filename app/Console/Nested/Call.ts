@@ -12,7 +12,7 @@ namespace App.Console.Nested {
         protected description: string = 'Example of nested console';
 
         handle = async () => {
-            console.log(`This is a nested command, you can call it with: venida nested:call`);
+            this.print(`This is a nested command, you can call it with: venida nested:call`);
         }
     }
 }
