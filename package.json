@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "ts-node compiler.ts",
+    "venida": "node ./build/venida.js",
     "start": "pm2 start venida.server.yaml",
     "pm2": "pm2",
     "debug": "npm run build && node ./build/server.js",
