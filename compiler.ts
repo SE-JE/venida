@@ -36,10 +36,92 @@ function scan (directory: string, files: string[]) {
 
             if (fileName.match(new RegExp("\.ts$"))) {
                 files.push(absolute);
+            } else if (!excludeRegex.test(absolute)) {
+                
             }
         }
     });
 
+}
+
+/**
+ * Get source file to text
+ * 
+ * @param fileName path file
+ * @param target target compile typescript
+ * @returns string | undefined
+ */
+ function getSourceFileToText (fileName: string, target: ts.ScriptTarget) {
+
+    const sourceText = ts.sys.readFile(fileName);
+
+    return (sourceText !== undefined) 
+        ? ts.createSourceFile(fileName, sourceText, target).text
+        : undefined;
+}
+
+/**
+ * Custom ts compiler host
+ */
+ function createCompilerHost (options: ts.CompilerOptions): ts.CompilerHost {
+
+    return {
+        getSourceFile: (name: any, languageVersion: any) => {
+
+            let check = new RegExp('.*/node_modules/.*');
+
+            // for non node_modules file
+            if (!check.test(name)) {
+
+                let string  = getSourceFileToText(name, option.target);
+
+                let arrString = (string !== undefined) ? string.split('\n') : [];
+
+                let newReplacementString = `///<reference types="node" />\n` +
+                    `///<reference path="${__dirname}/global-types.d.ts" />\n`;
+
+                let skipPrint = false;
+
+                arrString.forEach((str: string) => {
+
+                    if (!skipPrint) {
+                        newReplacementString += str+'\n';
+                    }
+                    skipPrint = false
+                });
+
+                let sourceFile = ts.createSourceFile(
+                    name, newReplacementString, option.target
+                );
+
+                return sourceFile;
+            } else {
+
+                //for node_modules use default compiler
+                const defaultCompilerHost = ts.createCompilerHost({});
+
+                return defaultCompilerHost.getSourceFile(
+                    name, languageVersion
+                );
+            }
+
+        },
+        writeFile: (filename: any, data: any) => {
+
+            console.log(filename);
+            ts.sys.writeFile(filename, data);
+        },
+        getDefaultLibFileName: () => ts.getDefaultLibFilePath(option),
+        getCurrentDirectory: () => ts.sys.getCurrentDirectory(),
+        getDirectories: path => ts.sys.getDirectories(path),
+        getCanonicalFileName: fileName =>
+            // ts.sys.useCaseSensitiveFileNames ? fileName : fileName.toLowerCase(),
+            fileName,
+        getNewLine: () => ts.sys.newLine,
+        useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+        fileExists: (pathFile: string) => ts.sys.fileExists(pathFile),
+        readFile: (pathFile: string) => ts.sys.readFile(pathFile)
+    };
 }
 
 
@@ -56,8 +138,8 @@ let directory = './';
 
 let files: string[] = [];
 
-if (process.argv[3]) {
-    files.push(process.argv[3])
+if (process.argv[2]) {
+    files.push(process.argv[2])
 } else {
     scan(directory, files);
 }
@@ -66,7 +148,7 @@ if (process.argv[3]) {
  * Compile all ts files
  */
 const program = ts.createProgram(
-    files, option
+    files, option, createCompilerHost(option)
 );
 
 const diagnostics = ts.getPreEmitDiagnostics(program);
