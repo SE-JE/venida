@@ -17,7 +17,7 @@ function scan (directory: string, files: string[]) {
     readDirectory.forEach((file: any) => {
 
         const absolute = path.join(directory, file);
-        let excludeRegex = new RegExp("^(node_modules|node_types|compiler|compile|build|\.git|\.vscode)");
+        let excludeRegex = new RegExp("^(node_modules|compiler|build|\.git|\.vscode)");
 
         if (excludeRegex.test(absolute)) {
             return;
@@ -78,7 +78,7 @@ function scan (directory: string, files: string[]) {
                 let arrString = (string !== undefined) ? string.split('\n') : [];
 
                 let newReplacementString = `///<reference types="node" />\n` +
-                    `///<reference path="${__dirname}/global-types.d.ts" />\n`;
+                    `///<reference path="${__dirname}/declaration/global-types.d.ts" />\n`;
 
                 let skipPrint = false;
 
