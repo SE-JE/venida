@@ -67,6 +67,8 @@ namespace System.Core.Base {
             value: false
         }];
 
+        private readline: any = Venida.import('node:readline');
+
         public handle: () => any = async () => { };
         public beforeRun: () => any = async () => { };
         public run: (argv: any) => any = async () => { };
@@ -80,7 +82,7 @@ namespace System.Core.Base {
             this.run = async (argv: any, withReturnValue: boolean = false) => {
                 this.withReturnValue = withReturnValue;
                 // parsing arguments & options from signature
-                let signature = this.signature.matchAll(/{([\w\s\-\=\?\:\|\'\"\*]+)}/g);
+                let signature = this.signature.matchAll(/{([\w\s\-\=\?\:\|\'\"\*\/]+)}/g);
 
                 /**
                  * Argument start from 3rd index
@@ -150,37 +152,39 @@ namespace System.Core.Base {
                 // if in argv have --help or -h, show help
                 if (argv.includes('--help') || argv.includes('-h')) {
                     this.showHelp();
-                    return;
-                }
+                } else {
+                    // check isThrowError argument & option
+                    if (this.isThrowError) {
+                        // change color to red
+                        if (this.withReturnValue) {
+                            return `${this.msgThrowError}`;
+                        } else {
+                            console.log(this.msgThrowError);
+                            return;
+                        }
+                    }
 
-                // check isThrowError argument & option
-                if (this.isThrowError) {
-                    // change color to red
-                    if (this.withReturnValue) {
-                        return `${this.msgThrowError}`;
-                    } else {
-                        console.log(this.msgThrowError);
-                        return;
+                    // parsing options from signature
+                    await this.beforeRun();
+                    await this.handle();
+                    await this.afterRun();
+
+                    // check isThrowError for user program
+                    if (this.isThrowError) {
+                        // change color to red
+                        if (this.withReturnValue) {
+                            return `${this.msgThrowError}`;
+                        } else {
+                            // red color
+                            console.log(this.msgThrowError);
+                            return;
+                        }
                     }
                 }
 
-                // parsing options from signature
-                await this.beforeRun();
-                await this.handle();
-                await this.afterRun();
-
-                // check isThrowError for user program
-                if (this.isThrowError) {
-                    // change color to red
-                    if (this.withReturnValue) {
-                        return `${this.msgThrowError}`;
-                    } else {
-                        console.log(this.msgThrowError);
-                        return;
-                    }
-                }
 
                 if (this.withReturnValue) {
+                    console.log(this.msgPrint);
                     return this.msgPrint;
                 } else {
                     console.log(this.msgPrint);
@@ -491,6 +495,25 @@ namespace System.Core.Base {
         protected print = (message: string): void => {
             // show message with green color
             this.msgPrint += message + '\n';
+        }
+
+        /**
+         * Ask question to user and return the answer
+         * @param message Question message
+         * @returns Answer
+         */
+        protected ask = (message: string): Promise<any> => {
+            return new Promise((resolve, reject) => {
+                let rl = this.readline.createInterface({
+                    input: process.stdin,
+                    output: process.stdout
+                });
+
+                rl.question(message, (answer: string) => {
+                    rl.close();
+                    resolve(answer);
+                });
+            });
         }
 
     }

@@ -1,0 +1,12 @@
+{
+      "name": "Book",
+      "controllerFullName": "App.Http.Controllers.Api.BooksController",
+      "serviceFullName": "App.Services.BooksService",
+      "modelFullName": "App.Models.Book",
+      "interfaceName": "IBooksService",
+      "interfaceProperties": "",
+      "tableName": "tbl_books",
+      "routeFullName": "Routes.Api.Book",
+      "routeUrl": "/books",
+      "version": "v1"
+}

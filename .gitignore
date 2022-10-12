@@ -3,6 +3,7 @@
 
 # environment variable
 .env
+knexfile.js
 
 # dependency
 node_modules/

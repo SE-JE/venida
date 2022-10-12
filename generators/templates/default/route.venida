@@ -1,0 +1,57 @@
+namespace {{ routeNamespace }} {
+    module.exports = () => {
+        return [
+            {
+                prefix: '{{ routeUrl }}',
+                version: '{{ version }}',
+                routes: [
+                    {
+                        method: 'get',
+                        controller: '{{ controllerFullName }}',
+                        fn: 'index',
+                        path: '{{ routeUrl }}',
+                        alias: '{{ routeUrl }}',
+                        query: null,
+                        requestAuth: 0
+                    },
+                    {
+                        method: 'get',
+                        controller: '{{ controllerFullName }}',
+                        fn: 'detail',
+                        path: '{{ routeUrl }}',
+                        alias: '{{ routeUrl }}',
+                        query: '/:{{ primaryKey }}',
+                        requestAuth: 0
+                    },
+                    {
+                        method: 'post',
+                        controller: '{{ controllerFullName }}',
+                        fn: 'create',
+                        path: '{{ routeUrl }}',
+                        alias: '{{ routeUrl }}',
+                        query: null,
+                        requestAuth: 0
+                    },
+                    {
+                        method: 'put',
+                        controller: '{{ controllerFullName }}',
+                        fn: 'update',
+                        path: '{{ routeUrl }}',
+                        alias: '{{ routeUrl }}',
+                        query: '/:{{ primaryKey }}',
+                        requestAuth: 0
+                    },
+                    {
+                        method: 'delete',
+                        controller: '{{ controllerFullName }}',
+                        fn: 'delete',
+                        path: '{{ routeUrl }}',
+                        alias: '{{ routeUrl }}',
+                        query: '/:{{ primaryKey }}',
+                        requestAuth: 0
+                    }
+                ]
+            }
+        ];
+    }
+}
