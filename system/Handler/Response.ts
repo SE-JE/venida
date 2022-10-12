@@ -252,7 +252,7 @@
 
         public getError (errorCode: string) {
 
-            let ErrorJson = Venida.import('Venida.error-declaration');
+            let ErrorJson = Venida.import('Venida.declaration.error-declaration');
 
             let error = ErrorJson[errorCode];
 

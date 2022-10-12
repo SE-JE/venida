@@ -17,7 +17,7 @@
         "identifier": "QUERY_ERROR",
         "label": "Query Error",
         "message": "Query Error",
-        "responseCode": 500,
+        "responseCode": 30,
         "isActive": 1
     },
     "VALIDATION_ERROR": {
