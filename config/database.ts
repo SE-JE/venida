@@ -68,6 +68,10 @@ namespace Config {
         public get (key: string) {
             return this.config[key];
         }
+
+        public getDatabaseName() {
+            return this.config.connection[this.config.default]?.connection?.database;
+        }
     }
 }
 

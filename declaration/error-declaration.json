@@ -26,5 +26,19 @@
         "message": "Validation Error",
         "responseCode": 422,
         "isActive": 1
+    },
+    "NOT_FOUND": {
+        "identifier": "NOT_FOUND",
+        "label": "Not Found",
+        "message": "Data Not Found",
+        "responseCode": 404,
+        "isActive": 1
+    },
+    "BAD_REQUEST": {
+        "identifier": "BAD_REQUEST",
+        "label": "Bad Request",
+        "message": "Bad Request",
+        "responseCode": 400,
+        "isActive": 1
     }
 }

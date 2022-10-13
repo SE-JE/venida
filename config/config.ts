@@ -10,12 +10,12 @@ namespace Config {
 
         private Env = Venida.import('dotenv', true);
 
-        private readonly config: {[key: string]: any} = {};
+        private readonly config: { [key: string]: any } = {};
 
         /**
          * Constructor Method
          */
-        constructor () {
+        constructor() {
 
             this.Env.config();
 
@@ -41,7 +41,7 @@ namespace Config {
             }
         }
 
-        public get (key: string) {
+        public get(key: string) {
             return this.config[key];
         }
     }
