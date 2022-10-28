@@ -40,5 +40,12 @@
         "message": "Bad Request",
         "responseCode": 400,
         "isActive": 1
+    },
+    "CONFLICT": {
+        "identifier": "CONFLICT",
+        "label": "Conflict",
+        "message": "Conflict",
+        "responseCode": 409,
+        "isActive": 1
     }
 }
