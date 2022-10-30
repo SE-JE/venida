@@ -21,6 +21,7 @@
                     {
                         name: 'Api',
                         path: 'Venida.system.Routes.Api',
+                        target: 'Venida.routes.Api',
                         prefix: '/api'
                     },
                     // {
