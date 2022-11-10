@@ -5,3 +5,31 @@
 </p>
 Venida Platform is a Boilerplate of your awesome application.
 With venida developing a technology backend so much faster without having to install the packages used, everything in venida is ready to use!
+
+------------
+
+## 💻 Install/Setup
+
+1. **Clone Repository**
+```bash
+git clone https://github.com/SE-JE/venida.git
+cd venida
+npm install
+npm run build
+npm run cp-error-declaration
+copy .env.example .env
+```
+
+2. **Run the Venida**
+- For debug development mode, you can use this:
+```
+npm run debug
+```
+- Run Venida with pm2 instance:
+```
+npm run start
+```
+- Call node via console:
+```
+npm run venida server
+```
