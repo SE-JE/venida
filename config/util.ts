@@ -22,6 +22,14 @@
                         name: 'String',
                         package: 'Venida.system.Util.String'
                     },
+                    {
+                        name: 'File',
+                        package: 'Venida.system.Util.File'
+                    },
+                    {
+                        name: 'Array',
+                        package: 'Venida.system.Util.Array'
+                    },
                     // {
                     //     name: 'Date',
                     //     package: 'Venida.system.Util.Date'
