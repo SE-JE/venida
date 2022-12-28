@@ -68,10 +68,6 @@ Venida.Server.register(Venida.import('@fastify/compress', true), {
     encodings: ['gzip']
 });
 
-/**
- * Initial Venida Utils
- */
-Venida.define('Utils', Venida.class('Venida.config.util'));
 
 
 module.exports = Venida.Server;

@@ -26,11 +26,22 @@ namespace App.Console.Knex {
             // generate knexfile.js file
             const fs = Venida.import('fs');
             const path = Venida.import('path');
-            const knexfile = path.join(Venida.getPath(), '../knexfile.js');
-            console.log(knexfile);
+            const knexfile = path.join(Venida.getPath(), '../declaration/knexfile.ts');
+
+            let setting: any = connectionConfig;
+            console.log('connectionConfig', connectionConfig);
+            
+            setting['migrations'] = {
+                "tableName": "migrations",
+                "extensions": ["js"],
+                "directory": "../../database/migrations"
+            }
+            setting['seeds'] = {
+                "directory": "../../database/seeds"
+            }
 
             if (!fs.existsSync(knexfile)) {
-                fs.writeFileSync(knexfile, `module.exports = {'development':${JSON.stringify(connectionConfig, null, 4)}}`);
+                fs.writeFileSync(knexfile, `module.exports = {\n\t"development": ${JSON.stringify(setting, null, 4)}\n}`);
             }
 
             // initiate knex database
@@ -38,6 +49,7 @@ namespace App.Console.Knex {
             await db.raw('CREATE DATABASE IF NOT EXISTS ??', [connectionConfig.connection.database]);
             await db.destroy();
 
+            console.log('Path:', knexfile);
             this.print('Knex database initiated successfully');
 
             return true;

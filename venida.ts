@@ -19,6 +19,10 @@ Venida.define('RouterConfig', Venida.class('Venida.config.router'));
 
 Venida.define('DatabaseConfig', Venida.class('Venida.config.database'));
 
+/**
+ * Initial Venida Utils
+ */
+Venida.define('Utils', Venida.class('Venida.config.util'));
 
 // get first argument
 let firstArgument = process.argv[2];
