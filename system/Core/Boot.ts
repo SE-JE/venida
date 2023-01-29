@@ -68,6 +68,10 @@ Venida.Server.register(Venida.import('@fastify/compress', true), {
     encodings: ['gzip']
 });
 
+Venida.Server.register(Venida.import('@fastify/multipart', true), {
+    addToBody: true
+})
+
 
 
 module.exports = Venida.Server;
