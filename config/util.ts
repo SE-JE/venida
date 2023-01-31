@@ -30,6 +30,10 @@
                         name: 'Array',
                         package: 'Venida.system.Util.Array'
                     },
+                    {
+                        name: 'Validator',
+                        package: 'Venida.system.Util.Validator'
+                    },
                     // {
                     //     name: 'Date',
                     //     package: 'Venida.system.Util.Date'
