@@ -22,6 +22,11 @@ Venida.define('Response', Venida.import('Venida.system.Handler.Response'));
  */
 Venida.define('Datasource', Venida.import('Venida.system.Core.Datasource'));
 
+/**
+ * Init Venida Packages
+ */
+Venida.define('Packages', Venida.class('Venida.config.package'));
+
 
 /**
  * Init Fastfy as Venida Web Server

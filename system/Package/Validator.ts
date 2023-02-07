@@ -4,7 +4,7 @@
  * SEJE - Digital
  */
 
-namespace System.Util {
+namespace System.Package {
 
     export class Validator {
 
@@ -25,7 +25,7 @@ namespace System.Util {
             this.errors = {};
         }
 
-        public validate (params: any, rules: {[key: string]: string[]}) {
+        public async validate (params: any, rules: {[key: string]: string[]}) {
 
             /**
              * @TODO: 
@@ -79,14 +79,27 @@ namespace System.Util {
                         case startsWith('isExist'): {
                             
                             const separator: string = '.';
+                            const QueryBuilder = Venida.Datasource;
 
-                            console.log('exist', paramData);
-                            console.log('validationRule', validationRule[idx]);
                             const lookupParams = validationRule[idx].split(':')[validationRule[idx].split(':').length - 1] ?? null;
                             let lookupParamsArray: string[] = (lookupParams && typeof lookupParams === 'string') ? lookupParams.split(separator) : [];
 
                             if (Array.isArray(lookupParamsArray) && lookupParamsArray.length > 0) {
-                                // do something
+
+                                if (lookupParamsArray.length == 2) {
+
+                                    let result = await QueryBuilder.first(`${lookupParamsArray[1]} AS fieldSelect`)
+                                        .from(lookupParamsArray[0])
+                                        .where(`${lookupParamsArray[0]}.${lookupParamsArray[1]}`, paramData)
+                                        .catch((error: any) => {
+                                            console.log(error);
+                                            this.setErrors(key, `Failed to lookup database at field ${key}`);
+                                        });
+
+                                    if (!result) {
+                                        this.setErrors(key, `The key of ${key} is not match in our database records`);
+                                    }
+                                }
                             }
                         } break;
                     }
@@ -98,4 +111,4 @@ namespace System.Util {
     }
 }
 
-module.exports = new System.Util.Validator();
+module.exports = new System.Package.Validator();

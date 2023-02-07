@@ -4,9 +4,16 @@
  * SEJE - Digital
  */
 
- namespace Config {
+namespace Config {
 
-    export class Util {
+    /**
+     * Basically the Venida Packages & Utils are the same thing. But the most basic differences is in
+     * the Venida Package you can access the Datasource module that you can do queries to the database.
+     * Besides that, you can also access several other services such as redis, and others.
+     * Venida can do this because the Packages will load before the Fastify instance.
+     */
+
+    export class Package {
 
         private readonly config: {[key: string]: any} = {};
 
@@ -19,20 +26,12 @@
 
                 register: [
                     {
-                        name: 'String',
-                        package: 'Venida.system.Util.String'
-                    },
-                    {
-                        name: 'File',
-                        package: 'Venida.system.Util.File'
-                    },
-                    {
-                        name: 'Array',
-                        package: 'Venida.system.Util.Array'
+                        name: 'Validator',
+                        package: 'Venida.system.Package.Validator'
                     },
                     // {
-                    //     name: 'Date',
-                    //     package: 'Venida.system.Util.Date'
+                    //     name: 'Storage',
+                    //     package: 'Venida.system.Package.Storage'
                     // }
                 ]
             }
@@ -50,7 +49,7 @@
 
                         this[one.name] = Venida.class(one.package);
                     } else {
-                        console.error(`Duplicate load util at ${one.name}`);
+                        console.error(`Duplicate load package at ${one.name}`);
                     }
                 }
             }
@@ -62,4 +61,4 @@
     }
 }
 
-module.exports = new Config.Util();
+module.exports = new Config.Package();
