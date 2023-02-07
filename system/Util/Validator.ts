@@ -45,7 +45,14 @@ namespace System.Util {
                 
                 let validationRule = rules[key] ?? [];
 
+                
                 for (const idx in validationRule) {
+
+                    const startsWith = (str: string) => {
+                        if (validationRule[idx].startsWith(str)) {
+                            return validationRule[idx];
+                        }
+                    }
 
                     switch (validationRule[idx]) {
                         case 'string': {
@@ -67,6 +74,19 @@ namespace System.Util {
                                 // }
                                 // errors[key].push(`The key of ${key} must be a numeric type`);
                                 this.setErrors(key, `The key of ${key} must be a string type`);
+                            }
+                        } break;
+                        case startsWith('isExist'): {
+                            
+                            const separator: string = '.';
+
+                            console.log('exist', paramData);
+                            console.log('validationRule', validationRule[idx]);
+                            const lookupParams = validationRule[idx].split(':')[validationRule[idx].split(':').length - 1] ?? null;
+                            let lookupParamsArray: string[] = (lookupParams && typeof lookupParams === 'string') ? lookupParams.split(separator) : [];
+
+                            if (Array.isArray(lookupParamsArray) && lookupParamsArray.length > 0) {
+                                // do something
                             }
                         } break;
                     }
