@@ -23,7 +23,6 @@ namespace App.Models {
             model: this.tableName,
             alias: 'u',
             primaryKey: 'id',
-            indexColumn: 'id',
             field: [
                 {
                     fieldName: 'id',
@@ -45,6 +44,29 @@ namespace App.Models {
                     fieldName: 'created_at',
                     fieldAlias: 'createdAt',
                     fieldType: 'UNIXTIME'
+                },
+                {
+                    model: 'role',
+                    alias: 'r',
+                    foreignKey: 'role_id',
+                    foreignKeyAlias: 'userRole',
+                    localKey: 'id',
+                    joinType: 'LEFT',
+                    field: [
+                        {
+                            fieldName: 'id',
+                            fieldAlias: 'roleId'
+                        },
+                        {
+                            fieldName: 'name',
+                            fieldAlias: 'roleName'
+                        },
+                        {
+                            fieldName: 'created_at',
+                            fieldAlias: 'roleCreatedAt',
+                            fieldType: 'UNIXTIME'
+                        }
+                    ]
                 }
             ]
         }

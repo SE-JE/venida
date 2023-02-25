@@ -98,11 +98,65 @@ namespace System.Core.Base {
             /**
              * I REALLY DONT KNOW WHAT MUST I WRITE HERE, LOL
              */
-            // for (const key in flattenedFieldDefined) {
-            //     if (key.includes(stringKey)) {
-            //         const splitKey = key.split('.');
-            //     }
-            // }
+            for (const key in flattenedFieldDefined) {
+
+                if (key.includes(stringKey)) {
+
+                    const splitKey = key.split('.');
+
+                    const identifier = splitKey.slice(0, splitKey.length - 1).join('.');
+                    const parentModel = splitKey.slice(0, splitKey.length - 3).join('.');
+
+                    const modelKey = identifier.concat('.model');
+                    const foreignKey = identifier.concat('.foreignKey');
+                    const foreignKeyAlias = identifier.concat('.foreignKeyAlias');
+                    const localKey = identifier.concat('.localKey');
+                    const localKeyAlias = identifier.concat('.alias');
+                    const joinType = identifier.concat('.joinType');
+                    const joinRawStatement = identifier.concat('.joinRawStatement');
+
+                    const aliasForeignKey = splitKey.length > 3 ? parentModel.concat('.alias') : 'alias';
+
+                    if (!flattenedFieldDefined[modelKey] || !flattenedFieldDefined[foreignKey] || !flattenedFieldDefined[localKey]) {
+                        continue;
+                    }
+
+                    switch (flattenedFieldDefined[joinType].toUpperCase()) {
+                        case 'LEFT': {
+                            console.log('masuk left join');
+                            this.query = this.query.leftJoin(
+                                `${flattenedFieldDefined[modelKey]} AS ${flattenedFieldDefined[localKeyAlias]}`,
+                                `${flattenedFieldDefined[localKeyAlias]}.${flattenedFieldDefined[localKey]}`,
+                                `${flattenedFieldDefined[aliasForeignKey]}.${flattenedFieldDefined[foreignKey]}`
+                            );
+                        } break;
+                        case 'RIGHT': {
+                            console.log('masuk right join');
+                            this.query = this.query.rightJoin(
+                                `${flattenedFieldDefined[modelKey]} AS ${flattenedFieldDefined[localKeyAlias]}`,
+                                `${flattenedFieldDefined[localKeyAlias]}.${flattenedFieldDefined[localKey]}`,
+                                `${flattenedFieldDefined[aliasForeignKey]}.${flattenedFieldDefined[foreignKey]}`
+                            );
+                        } break;
+                        case 'RAW': {
+                            if (!flattenedFieldDefined[joinRawStatement] || flattenedFieldDefined[joinRawStatement] === '') {
+                                Venida.Response.exception('QUERY_ERROR', 'Not found joinRawStatement parameters in RAW joinType');
+                            }
+                            this.query = this.query.joinRaw(flattenedFieldDefined[joinRawStatement]);
+                        } break;
+                        case 'INNER': {
+                            this.query = this.query.innerJoin(
+                                `${flattenedFieldDefined[modelKey]} AS ${flattenedFieldDefined[localKeyAlias]}`,
+                                `${flattenedFieldDefined[localKeyAlias]}.${flattenedFieldDefined[localKey]}`,
+                                `${flattenedFieldDefined[aliasForeignKey]}.${flattenedFieldDefined[foreignKey]}`
+                            )
+                        } break;
+                        default: {
+                            Venida.Response.exception('QUERY_ERROR', 'Wring joinType value');
+                        } break;
+                    }
+                }
+            }
 
             return this;
         }
