@@ -88,6 +88,28 @@ namespace App.Http.Controllers.Api.V1 {
             return Venida.Response.send(this.response, result);
         }
 
+        public async requestValidate() {
+            /**
+             * Validator example
+             */
+            // let params = this.request.body;
+            // let validate = await Venida.Packages.Validator.validate(params, {
+            //     name: ['string'],
+            //     age: ['numeric'],
+            //     email: ['isExist:user.email']
+            // });
+            // Venida.Response.send(this.response, params);
+
+            let model = await this.load('User', 'model');
+
+            let result = await model.findAll();
+
+            console.log('result log', result);
+
+            Venida.Response.send(this.response, result);
+            // Venida.Response.exception('QUERY_ERROR', 'Test error exception', result);
+        }
+
     }
 }
 

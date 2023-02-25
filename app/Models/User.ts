@@ -17,7 +17,45 @@ namespace App.Models {
 
     export class User extends BaseModel {
 
-        public tableName: string = 'users';
+        public tableName = 'user';
+
+        public fieldDefined = {
+            model: this.tableName,
+            alias: 'u',
+            primaryKey: 'id',
+            indexColumn: 'id',
+            field: [
+                {
+                    fieldName: 'id',
+                    fieldAlias: 'id'
+                },
+                {
+                    fieldName: 'name',
+                    fieldAlias: 'name'
+                },
+                {
+                    fieldName: 'email',
+                    fieldAlias: 'email'
+                },
+                {
+                    fieldName: 'is_active',
+                    fieldAlias: 'isActive'
+                },
+                {
+                    fieldName: 'created_at',
+                    fieldAlias: 'createdAt',
+                    fieldType: 'UNIXTIME'
+                }
+            ]
+        }
+
+        public async findAll() {
+            const result = await this.select('*')
+                .get()
+                .result();
+
+            return result;
+        }
 
         public async getAll() {
 

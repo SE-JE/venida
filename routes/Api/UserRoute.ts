@@ -41,6 +41,15 @@ namespace Routes.Api {
                         query: null,
                         requestAuth: 0
                     },
+                    {
+                        method: 'get',
+                        controller: 'App.Http.Controllers.API.V1.UserController',
+                        fn: 'requestValidate',
+                        path: '/user/request-validate',
+                        alias: '/user/request-validate',
+                        query: null,
+                        requestAuth: 0
+                    }
                 ]
             }
         ];
