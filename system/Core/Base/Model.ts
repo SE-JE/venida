@@ -96,7 +96,45 @@ namespace System.Core.Base {
             }
 
             /**
-             * I REALLY DONT KNOW WHAT MUST I WRITE HERE, LOL
+             * Filter Operate at field defined
+             */
+            if (this.fieldDefined?.filter && this.fieldDefined?.filter.length > 0) {
+
+                for (let filter of this.fieldDefined?.filter) {
+
+                    switch (filter?.operator) {
+
+                        case '=':
+                        case '>':
+                        case '<':
+                        case '>=':
+                        case '<=':
+                        case '!=':
+                        case 'like': {
+                            this.query = this.query.where(filter.fieldName, filter?.operator, filter?.val);
+                        } break;
+                        case 'in': {
+                            if (!Array.isArray(filter?.val)) {
+                                Venida.Response.exception('QUERY_ERROR', 'Wrong format filter at type `in`');
+                            }
+                            this.query = this.query.whereIn(filter?.fieldName, filter?.val);
+                        } break;
+                        case 'or': {
+                            if (!Array.isArray(filter?.val)) {
+                                Venida.Response.exception('QUERY_ERROR', 'Wrong format filter at type `or`');
+                            }
+                            if (filter?.val.length > 0) {
+                                for (const one of filter?.val) {
+                                    this.query = this.query.orWhere(one?.fieldName, one?.operator, one?.val);
+                                }
+                            }
+                        } break;
+                    }
+                }
+            }
+
+            /**
+             * Check if field defined has a relation model or not
              */
             for (const key in flattenedFieldDefined) {
 
@@ -345,6 +383,7 @@ namespace System.Core.Base {
             let toSql = await this.query.toSQL();
 
             console.log('sql result:', toSql.sql);
+            console.log('sql bindings:', toSql.bindings);
 
             let result = this.DB.with('tempTable', this.DB.raw(toSql.sql, toSql.bindings))
                 .from('tempTable');
