@@ -23,13 +23,13 @@ namespace App.Models {
             model: this.tableName,
             alias: 'u',
             primaryKey: 'id',
-            filter: [
-                {
-                    fieldName: 'r.id',
-                    operator: '=',
-                    val: 3
-                }
-            ],
+            // filter: [
+            //     {
+            //         fieldName: 'r.id',
+            //         operator: '=',
+            //         val: 3
+            //     }
+            // ],
             field: [
                 {
                     fieldName: 'id',

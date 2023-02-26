@@ -35,7 +35,7 @@
                 module = new module();
 
                 if (type == 'model') {
-                    await module.init();
+                    await module.init(req, res);
                 }
 
                 return module;

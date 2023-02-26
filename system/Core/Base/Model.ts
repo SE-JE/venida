@@ -37,7 +37,10 @@ namespace System.Core.Base {
 
             let me = this;
 
-            this.init = () => {
+            this.init = (request?: any, response?: any) => {
+
+                this.request = request ?? {};
+                this.response = response ?? {};
 
                 let createConnection = Venida.Datasource;
 
@@ -60,7 +63,7 @@ namespace System.Core.Base {
 
                 model = new model();
 
-                await model.init();
+                await model.init(this.request, this.response);
 
                 return model;
             }
@@ -134,6 +137,11 @@ namespace System.Core.Base {
             }
 
             /**
+             * Implement filter from request query
+             */
+            this.implementFilterQuery();
+
+            /**
              * Check if field defined has a relation model or not
              */
             for (const key in flattenedFieldDefined) {
@@ -161,7 +169,6 @@ namespace System.Core.Base {
 
                     switch (flattenedFieldDefined[joinType].toUpperCase()) {
                         case 'LEFT': {
-                            console.log('masuk left join');
                             this.query = this.query.leftJoin(
                                 `${flattenedFieldDefined[modelKey]} AS ${flattenedFieldDefined[localKeyAlias]}`,
                                 `${flattenedFieldDefined[localKeyAlias]}.${flattenedFieldDefined[localKey]}`,
@@ -169,7 +176,6 @@ namespace System.Core.Base {
                             );
                         } break;
                         case 'RIGHT': {
-                            console.log('masuk right join');
                             this.query = this.query.rightJoin(
                                 `${flattenedFieldDefined[modelKey]} AS ${flattenedFieldDefined[localKeyAlias]}`,
                                 `${flattenedFieldDefined[localKeyAlias]}.${flattenedFieldDefined[localKey]}`,
@@ -199,6 +205,80 @@ namespace System.Core.Base {
             return this;
         }
 
+        /**
+         * Implement filter from request query
+         */
+        private implementFilterQuery () {
+
+            let requestQuery = this.request.query;
+
+            if (requestQuery) {
+
+                let filters: any[] = [];
+                try {
+                    filters = JSON.parse(requestQuery?.filter);
+                } catch (error: any) {
+                    Venida.Error.exception('BAD_REQUEST', 'Failed to parsing query request query filter format');
+                }
+
+                for (const filter of filters) {
+
+                    this.applyConditionalFilter(this.mapping[filter.field], filter.operator, filter.val);
+                }
+            }
+        }
+
+        /**
+         * Apply Condition Mapping
+         */
+        private applyConditionalFilter (field: string, operator: string, val: any) {
+
+            switch (operator) {
+                case '=':
+                case '>':
+                case '<':
+                case '>=':
+                case '<=': {
+                    this.query = this.query.orWhere(field, operator, val);
+                } break;
+                case 'in': {
+                    if (typeof val == 'string') {
+                        val = val.split(',');
+                    }
+
+                    this.query = this.query.whereIn(field, val);
+                } break;
+                case 'ni': {
+                    if (typeof val == 'string') {
+                        val = val.split(',');
+                    }
+    
+                    this.query = this.query.whereNotIn(field, val);
+                } break;
+                case 'bw': {
+                    this.query = this.query.where(field, 'LIKE', `${val}%`);
+                } break;
+                case 'fw': {
+                    this.query = this.query.where(field, 'LIKE', `%${val}`);
+                } break;
+                case 'xw': {
+                    this.query = this.query.where(field, 'LIKE', `%${val}%`);
+                } break;
+                /**
+                 * Still thinking for next improvement with or filter
+                 */
+                // case 'or': {
+                //     this.query = this.query.where((queryWhere: any) => {
+
+                //         for (const queryFilter of val) {
+
+                //             this.applyConditionalFilter(this.mapping[queryFilter?.field], queryFilter?.operator, queryFilter?.val);
+                //         }
+                //     });
+                // }
+            }
+        }
+
         private fieldMappingExtractor () {
 
             const flatten = Venida.import('flat', true);
@@ -213,10 +293,11 @@ namespace System.Core.Base {
     
                     const identifier = splitKey.slice(0, splitKey.length - 3).join('.');
     
-                    const tableAlias = (identifier == '') ? this.tableName : identifier.concat('.alias');
+                    const tableAlias = identifier == '' ? 'alias' : identifier.concat('.alias');
 
                     const fieldKey = key;
                     const aliasKey = key.replace('.fieldName', '.fieldAlias');
+
                     this.mapping[flatFieldDefined[aliasKey]] = `${flatFieldDefined[tableAlias]}.${flatFieldDefined[fieldKey]}`;
                 }
             }
