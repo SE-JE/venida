@@ -8,8 +8,6 @@ namespace System.Handler {
 
     export class Request {
 
-        public requestTime: number = 0;
-
         public get (requestName: string, key: string) {
 
             try {

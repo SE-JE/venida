@@ -13,7 +13,7 @@ namespace App.Http.Hooks {
             /**
              * Fill request time for count the execute time
              */
-            Venida.Request.requestTime = Math.floor(Date.now()/1000);
+            Venida.Request.requestTime = Date.now();
 
             // do something..
         }

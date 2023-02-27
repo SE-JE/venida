@@ -59,6 +59,13 @@ Venida.Server.addHook('preValidation', async (request: any, response: any) => {
     return await PreValidationHook.handler(request, response);
 });
 
+Venida.Server.addHook('onResponse', async (request: any, response: any) => {
+
+    const OnResponseHook = Venida.import('Venida.app.Http.Hooks.OnResponse');
+
+    return await OnResponseHook.handler(request, response);
+});
+
 /**
  * Register the Fastify packages
  */

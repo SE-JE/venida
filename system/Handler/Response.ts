@@ -113,8 +113,7 @@
 
             let responseContent: any = this.onSuccess(data, option);
 
-            responseContent['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
-            // Venida.Request.resetRequestTime();
+            responseContent['execTime'] = `${response.getResponseTime().toFixed(2)} ms`;
 
             response.status(responseContent.responseCode);
             return response.send(responseContent);
@@ -126,7 +125,7 @@
 
             let responseContent: any = this.onError(errorCode, options);
 
-            responseContent['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
+            responseContent['execTime'] = `${response.getResponseTime().toFixed(2)} ms`;
 
             response.status(responseContent.responseCode);
             return response.send(responseContent);
@@ -139,7 +138,7 @@
             let errorDeclaration = this.getError(errorCode);
 
             err['responseCode'] = errorDeclaration?.responseCode;
-            err['execTime'] = Math.floor(Date.now()/1000) - Venida.Request.requestTime;
+            err['execTime'] = `${(Date.now() - Venida.Request.requestTime).toFixed(2)} ms`;
             err['identifier'] = errorDeclaration?.message;
             err['message'] = error ?? errorDeclaration?.message;
             err['error'] = options;
