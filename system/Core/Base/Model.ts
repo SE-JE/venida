@@ -417,6 +417,82 @@ namespace System.Core.Base {
         }
 
         /**
+         * Custom where function
+         */
+        private where (value1: any, value2?: any, value3?: any) {
+
+            if (value3) {
+
+                if (this.query) {
+                    this.query = this.query.where(value1, value2, value3);
+                } else {
+                    this.query = this.DB.where(value1, value2, value3);
+                }
+            } else if (value2) {
+
+                if (this.query) {
+                    this.query = this.query.where(value1, value2);
+                } else {
+                    this.query = this.DB.where(value1, value2);
+                }
+            } else if (value1) {
+                
+                if (this.query) {
+                    this.query = this.query.where(value1, value2);
+                } else {
+                    this.query = this.DB.where(value1, value2);
+                }
+            }
+
+            return this;
+        }
+
+        /**
+         * Custom or where function
+         */
+        private orWhere (value1: any, value2?: any, value3?: any) {
+
+            if (value3) {
+
+                if (this.query) {
+                    this.query = this.query.orWhere(value1, value2, value3);
+                } else {
+                    this.query = this.DB.orWhere(value1, value2, value3);
+                }
+            } else if (value2) {
+
+                if (this.query) {
+                    this.query = this.query.orWhere(value1, value2);
+                } else {
+                    this.query = this.DB.orWhere(value1, value2);
+                }
+            } else if (value1) {
+                
+                if (this.query) {
+                    this.query = this.query.orWhere(value1, value2);
+                } else {
+                    this.query = this.DB.orWhere(value1, value2);
+                }
+            }
+
+            return this;
+        }
+
+        /**
+         * Custom where in function
+         */
+        private whereIn (value1: any, value2: any[]) {
+
+            if (this.query) {
+                this.query = this.query.whereIn(value1, value2);
+            } else {
+                this.query = this.DB.whereIn(value1, value2);
+            }
+
+            return this;
+        }
+
+        /**
          * Custom limit function
          */
         private limit (limitValue: any) {
@@ -482,6 +558,10 @@ namespace System.Core.Base {
             if (this.isObject) {
                 return result;
             }
+
+            /**
+             * Note implement refresh field defined yet for next improvement
+             */
 
             return {
                 data: result,
