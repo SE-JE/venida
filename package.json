@@ -37,6 +37,7 @@
     "flat": "^5.0.2",
     "knex": "^2.3.0",
     "mysql2": "^2.3.3",
-    "path-to-regexp": "^6.2.1"
+    "path-to-regexp": "^6.2.1",
+    "redis": "^4.6.5"
   }
 }

@@ -19,6 +19,8 @@ Venida.define('RouterConfig', Venida.class('Venida.config.router'));
 
 Venida.define('DatabaseConfig', Venida.class('Venida.config.database'));
 
+Venida.define('RedisConfig', Venida.class('Venida.config.redis'));
+
 /**
  * Initial Venida Utils
  */

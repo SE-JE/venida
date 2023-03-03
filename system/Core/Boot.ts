@@ -23,6 +23,29 @@ Venida.define('Response', Venida.import('Venida.system.Handler.Response'));
 Venida.define('Datasource', Venida.import('Venida.system.Core.Datasource'));
 
 /**
+ * Redis initalizer
+ */
+const Redis = Venida.import('redis', true);
+
+if (Venida.RedisConfig.get('redisConfig')['host'] !== null &&
+    Venida.RedisConfig.get('redisConfig')['host'] !== '')
+{
+    const RedisClient = Redis.createClient(Venida.RedisConfig.get('redisConfig'));
+
+    RedisClient.connect();
+
+    RedisClient.on('connect', () => {
+        console.log('Redis Connected Successfully');
+    });
+
+    RedisClient.on('error', (err: any) => {
+        console.error('Redis error:', err);
+    });
+
+    Venida.define('RedisClient', RedisClient);
+}
+
+/**
  * Init Venida Packages
  */
 Venida.define('Packages', Venida.class('Venida.config.package'));
