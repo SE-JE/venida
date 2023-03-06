@@ -5,7 +5,7 @@
  */
 
 namespace App.Console {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
     export class Server extends BaseConsole {
         protected signature: string = 'serve {--port:running port=} {--node:name of the node=}';
         protected description: string = 'Running Venida Server';

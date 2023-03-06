@@ -46,8 +46,8 @@ firstArgument = firstArgument.toLowerCase().replace(/\b[a-z]/g, function (letter
 firstArgument = firstArgument.split(' ').join('.');
 
 // check if command is exist
-if (Venida.exist(`Venida.App.Console.${firstArgument}`)) {
-    Venida.command(`Venida.App.Console.${firstArgument}`, process.argv, false, true);
+if (Venida.exist(`Venida.app.Console.${firstArgument}`)) {
+    Venida.command(`Venida.app.Console.${firstArgument}`, process.argv, false, true);
 }
 
 
