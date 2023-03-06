@@ -5,7 +5,7 @@
  */
 
 namespace App.Console.Nested {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
 
     export class Call extends BaseConsole {
         protected signature: string = '';

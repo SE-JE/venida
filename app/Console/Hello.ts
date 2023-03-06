@@ -5,7 +5,7 @@
  */
 
 namespace App.Console {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
 
     export class Hello extends BaseConsole {
         protected signature: string = '{name:The name of user="wildan afbidal"} {--age: Age of user} {--skill|s: Skills of user=*}';

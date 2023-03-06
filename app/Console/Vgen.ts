@@ -5,8 +5,8 @@
  */
 
 namespace App.Console {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
-    const VFile = Venida.import('Venida.System.Core.Base.File');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
+    const VFile = Venida.import('Venida.system.Core.Base.File');
 
     export class Vgen extends BaseConsole {
         /**

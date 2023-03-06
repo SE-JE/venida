@@ -5,7 +5,7 @@
  */
 
 namespace App.Console {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
     const fs = Venida.import('fs', true);
 
     export class List extends BaseConsole {
@@ -38,7 +38,7 @@ namespace App.Console {
             // to lower case
             let commands: any = commandNames.map((command: any) => {
                 const commandName: string = command.replace('/', ':').toLowerCase();
-                const localClassName: string = 'Venida.App.Console.' + command.replace(/\//g, '.');
+                const localClassName: string = 'Venida.app.Console.' + command.replace(/\//g, '.');
 
                 const commandClass: any = Venida.import(localClassName);
                 let commandConstructor: any = new commandClass();

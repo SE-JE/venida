@@ -5,7 +5,7 @@
  */
 
 namespace App.Console.Route {
-    const BaseConsole = Venida.import('Venida.System.Core.Base.Console');
+    const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
 
     export class List extends BaseConsole {
         protected signature: string = '';
