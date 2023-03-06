@@ -41,7 +41,7 @@ namespace App.Console.Route {
         }
 
         handle = async () => {
-            let routerConfig = Venida.import('Venida.config.Router');
+            let routerConfig = Venida.import('Venida.config.router');
             // console.log(routerConfig);
             let routes = routerConfig.get('routes');
             // console.log(routes);
