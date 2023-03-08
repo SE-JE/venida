@@ -8,7 +8,8 @@ namespace Config {
 
     export class Redis {
 
-        private Env = Venida.import('dotenv', true);
+        // private Env = Venida.import('dotenv', true);
+        private Env = require('dotenv');
 
         private readonly config: { [key: string]: any } = {};
 
@@ -29,7 +30,9 @@ namespace Config {
                     port     : process.env["REDIS_PORT"],
                     password : process.env["REDIS_PASSWORD"],
                     database : process.env["REDIS_DB"] ?? 0,
-                }
+                },
+
+                queueName: 'venida-queue'
             }
         }
 
