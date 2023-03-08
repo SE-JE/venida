@@ -81,9 +81,14 @@ namespace System.Routes.API {
                 let HttpController: any;
                 
                 try {
+
+                    let controller = route?.controller.split('.');
+                    controller[0] = controller[0].toLowerCase();
+                    controller = controller.join('.');
+                    
                     HttpController = Venida.import(
                         'Venida.'
-                        .concat(route?.controller)
+                        .concat(controller)
                     );
                 } catch (error: any) {
                     Venida.Response.exception('ROUTE_NOT_FOUND');
@@ -97,7 +102,7 @@ namespace System.Routes.API {
                 } else {
 
                     console.error('Controller not implements');
-                    Venida.Response.exception('ROUTE_NOT_FOUND');
+                    Venida.Response.exception('ROUTE_NOT_FOUND', 'awukwuk');
                 }
 
 
