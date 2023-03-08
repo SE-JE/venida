@@ -10,9 +10,19 @@ namespace App.Job {
 
     export class TestingJob extends BaseQueueJob {
 
+        private DB: any;
+
         public async handle (data: any) {
 
             console.log('run testing worker');
+
+            const user = await this.DB.first('*')
+                .from('user')
+                .orderBy('id', 'DESC');
+
+            console.log('Last user: ', user);
+
+            return;
         }
     }
 }

@@ -12,6 +12,8 @@ namespace System.Core.Base.Queue {
 
         private BullQueue: any;
 
+        private DB: any;
+
         public async add (type: string, data: any, options?: any) {
 
             if (!options) {

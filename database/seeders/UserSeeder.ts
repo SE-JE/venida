@@ -12,10 +12,10 @@ import { Knex } from "knex";
  */
 exports.seed = async function(knex: Knex) {
     // Deletes ALL existing entries
-    await knex("User").del();
+    await knex("user").del();
 
     // Generating Seeder
-    await knex("User").insert([
+    await knex("user").insert([
         {
             name: 'Super User',
             email: 'superuser@mail.com',

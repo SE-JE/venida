@@ -6,7 +6,9 @@
 
 import { SandboxedJob } from 'bullmq';
 const Bull = require('bullmq');
+const Knex = require('knex');
 const redisConfig = require('../../../../config/redis');
+const databaseConfig = require('../../../../config/database');
 const Path = require('node:path');
 
 const VenidaPath = Path.join(__dirname, '..', '..', '..', '..');
@@ -15,20 +17,23 @@ const BullQueue = new Bull.Queue(redisConfig.get('queueName'), {
     connection: redisConfig.get('redisConfig')
 });
 
+const KnexInstance = Knex(databaseConfig.get('connection')['mysql']);
+
 module.exports = async (job: SandboxedJob) => {
 
     console.log('job data', job.data);
 
-    let path = Path.join(VenidaPath, 'app', 'Job', job.data.type);
-    path = path.replace(/ /g, '\ ');
+    let pathJob = Path.join(VenidaPath, 'app', 'Job', job.data.type);
+    pathJob = pathJob.replace(/ /g, '\ ');
 
-    const Task = require(path);
+    const Job = require(pathJob);
 
-    let taskInstance = new Task();
+    let jobInstance = new Job();
 
-    taskInstance.BullQueue = BullQueue;    
+    jobInstance.BullQueue = BullQueue;
+    jobInstance.DB = KnexInstance;
 
-    await taskInstance.handle(job.data);
+    await jobInstance.handle(job.data);
 
     return;
 }

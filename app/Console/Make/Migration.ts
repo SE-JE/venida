@@ -29,8 +29,8 @@
             console.log('migration name:', migrationName);
 
             let template = await this.generateTemplate(this.argument('name'));
-            
-            const migrationFileLocation = Path.join(Venida.getPath(), `../database/migrations/${migrationName}`);
+
+            const migrationFileLocation = Path.join(Venida.getPath(), '..', 'database', 'migrations', `${migrationName}`);
             
             if (!FileSystem.existsSync(migrationFileLocation)) {
                 await VFile.put(migrationFileLocation, template);
@@ -43,11 +43,13 @@
 
         private generateTemplate = async (migrationName: string) => {
 
-            let template: any = await VFile.get(Path.join(Venida.getPath(), `../generators/templates/Migration/CreateMigration.venida`));
+            let template: any = await VFile.get(
+                Path.join(Venida.getPath(), '..', 'generators', 'templates', 'Migration', 'CreateMigration.venida')
+            );
 
             let fileName: string = migrationName;
 
-            template = template.replace(new RegExp(`{{ tableName }}`, 'g'), `\"${migrationName}\"`);
+            template = template.replace(new RegExp(`{{ tableName }}`, 'g'), `\"${migrationName.toLowerCase()}\"`);
 
             return template;
         }

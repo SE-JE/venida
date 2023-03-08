@@ -29,7 +29,7 @@ namespace App.Console.Make {
 
             let template = await this.generateTemplate(this.argument('name'));
 
-            const seedFileLocation = Path.join(Venida.getPath(), `../database/seeders/${seederName}`);
+            const seedFileLocation = Path.join(Venida.getPath(), '..', 'database', 'seeders', `${seederName}`)
 
             if (!FileSystem.existsSync(seedFileLocation)) {
                 await VFile.put(seedFileLocation, template);
@@ -42,9 +42,12 @@ namespace App.Console.Make {
 
         private generateTemplate = async (seederName: string) => {
 
-            let template: any = await VFile.get(Path.join(Venida.getPath(), `../generators/templates/Seeder/CreateSeeder.venida`));
+            let template: any = await VFile.get(
+                Path.join(Venida.getPath(), '..', 'generators', 'templates', 'Seeder', 'CreateSeeder.venida')
+            );
 
             let tableName = seederName.split('Seeder')[0];
+            tableName = tableName.toLowerCase();
 
             template = template.replace(new RegExp(`{{ tableName }}`, 'g'), `\"${tableName}\"`);
 

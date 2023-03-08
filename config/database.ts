@@ -8,7 +8,8 @@ namespace Config {
 
     export class Database {
 
-        private Env = Venida.import('dotenv', true);
+        // private Env = Venida.import('dotenv', true);
+        private Env = require('dotenv');
 
         private readonly config: { [key: string]: any } = {};
 

@@ -52,7 +52,7 @@ namespace App.Console.Knex {
             }
 
             if (this.option('class')) {
-                config['specific'] = `${this.option('class')}.js`;
+                config['specific'] = `${this.option('class')?.toLowerCase()}.js`;
             }
             
             await KnexInstance.seed.run(config)
