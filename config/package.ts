@@ -29,6 +29,10 @@ namespace Config {
                         name: 'Validator',
                         package: 'Venida.system.Package.Validator'
                     },
+                    {
+                        name: 'Queue',
+                        package: 'Venida.system.Package.Queue'
+                    },
                     // {
                     //     name: 'Storage',
                     //     package: 'Venida.system.Package.Storage'

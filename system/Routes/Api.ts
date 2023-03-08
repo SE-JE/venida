@@ -102,7 +102,7 @@ namespace System.Routes.API {
                 } else {
 
                     console.error('Controller not implements');
-                    Venida.Response.exception('ROUTE_NOT_FOUND', 'awukwuk');
+                    Venida.Response.exception('ROUTE_NOT_FOUND');
                 }
 
 

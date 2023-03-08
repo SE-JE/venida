@@ -1,0 +1,5 @@
+apps:
+  - script: 'node ./build/venida.js queue:work'
+    name: 'VenidaQueueWorker001'
+    watch: false
+    ignore_watch: ['build/', 'node_modules/']

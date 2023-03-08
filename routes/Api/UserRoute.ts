@@ -43,7 +43,7 @@ namespace Routes.Api {
                     },
                     {
                         method: 'get',
-                        controller: 'App.Http.Controllers.API.V1.UserController',
+                        controller: 'App.Http.Controllers.Api.V1.UserController',
                         fn: 'requestValidate',
                         path: '/user/request-validate',
                         alias: '/user/request-validate',
