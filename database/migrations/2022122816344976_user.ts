@@ -17,7 +17,7 @@ exports.up = async function (knex: Knex) {
         table.string('email', 128).notNullable();
         table.string('password').notNullable();
         table.boolean('is_active').notNullable();
-        table.bigInteger('created_at').defaultTo(Date.now());
+        table.bigInteger('created_at').defaultTo(Math.floor(Date.now()/1000));
         table.bigInteger('updated_at');
     });
 };

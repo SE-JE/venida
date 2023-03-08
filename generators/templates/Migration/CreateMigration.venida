@@ -13,7 +13,7 @@ import { Knex } from "knex";
 exports.up = async function (knex: Knex) {
     return await knex.schema.createTable({{ tableName }}, function (table: any) {
         table.bigIncrements();
-        table.bigInteger('created_at').defaultTo(Date.now());
+        table.bigInteger('created_at').defaultTo(Math.floor(Date.now()/1000));
         table.bigInteger('updated_at');
     });
 };

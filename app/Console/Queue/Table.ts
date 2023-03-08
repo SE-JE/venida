@@ -4,19 +4,19 @@
  * SEJE - Digital
  */
 
- namespace App.Console.Make {
+namespace App.Console.Queue {
 
     const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
     const VFile = Venida.import('Venida.system.Core.Base.File');
     const FileSystem = Venida.import('fs');
     const Path = Venida.import('path');
 
-    export class Migration extends BaseConsole {
+    export class Table extends BaseConsole {
 
         constructor() {
             super();
-            this.signature = '{name: The migration name}';
-            this.description = 'Make database migration file with named';
+            this.signature = '';
+            this.description = 'Make database migration file for log job table';
         }
 
         handle = async () => {
@@ -24,11 +24,11 @@
             let migrationName: string;
             let prefixMigrationName = this.getPrefixDate();
 
-            migrationName = `${prefixMigrationName}_${this.argument('name')}.ts`;
+            migrationName = `${prefixMigrationName}_job.ts`;
 
             console.log('Migration name:', migrationName.toLowerCase());
 
-            let template = await this.generateTemplate(this.argument('name'));
+            let template = await this.generateTemplate();
 
             const migrationFileLocation = Path.join(Venida.getPath(), '..', 'database', 'migrations', `${migrationName.toLowerCase()}`);
             
@@ -41,15 +41,11 @@
             return true;
         }
 
-        private generateTemplate = async (migrationName: string) => {
+        private generateTemplate = async () => {
 
             let template: any = await VFile.get(
-                Path.join(Venida.getPath(), '..', 'generators', 'templates', 'Migration', 'CreateMigration.venida')
+                Path.join(Venida.getPath(), '..', 'generators', 'templates', 'Migration', 'JobMigration.venida')
             );
-
-            let fileName: string = migrationName;
-
-            template = template.replace(new RegExp(`{{ tableName }}`, 'g'), `\"${migrationName.toLowerCase()}\"`);
 
             return template;
         }
@@ -76,4 +72,4 @@
     }
 }
 
-module.exports = App.Console.Make.Migration;
+module.exports = App.Console.Queue.Table;
