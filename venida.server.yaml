@@ -1,9 +1,9 @@
 apps:
-  - script: 'node ./build/venida.js server --name VenidaApp001 --nodePort 3400'
+  - script: 'node ./build/venida.js server --nodeName VenidaApp001 --nodePort 3400'
     name: 'VenidaApp001'
     watch: false
     ignore_watch: ['build/', 'node_modules/']
-  # - script: 'node ./build/server.js --name VenidaApp002 --nodePort 3420'
+  # - script: 'node ./build/server.js --nodeName VenidaApp002 --nodePort 3420'
   #   name: 'VenidaApp002'
   #   watch: false
   #   ignore_watch: ['build/', 'node_modules/']

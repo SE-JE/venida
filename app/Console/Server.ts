@@ -7,7 +7,7 @@
 namespace App.Console {
     const BaseConsole = Venida.import('Venida.system.Core.Base.Console');
     export class Server extends BaseConsole {
-        protected signature: string = 'serve {--port:running port=} {--node:name of the node=}';
+        protected signature: string = 'serve {--nodePort:running port=} {--nodeName:name of the node=}';
         protected description: string = 'Running Venida Server';
 
         handle = async () => {
@@ -21,8 +21,8 @@ namespace App.Console {
              */
             Venida.class('Venida.system.Handler.Route').initRoute();
 
-            const nodePort = this.option('port', Venida.Config.get('server')['port']);
-            const nodeName = this.option('node', Venida.Config.get('server')['name']);
+            const nodePort = this.option('nodePort', Venida.Config.get('server')['port']);
+            const nodeName = this.option('nodeName', Venida.Config.get('server')['name']);
 
             Server.listen({
                 port: nodePort
