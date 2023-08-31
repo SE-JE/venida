@@ -14,7 +14,7 @@
     "lint": "eslint . --ext .ts"
   },
   "author": "Org, SE-JE Digital",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.41.0",

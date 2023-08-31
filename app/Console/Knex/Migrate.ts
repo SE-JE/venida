@@ -18,7 +18,7 @@ namespace App.Console.Knex {
 
         constructor() {
             super();
-            this.signature = '{--name: The migration file name?}';
+            this.signature = '{--name: The migration file name?} {--seed: Run the all seeders?}';
             this.description = 'Run the database migration file';
         }
 
@@ -54,7 +54,11 @@ namespace App.Console.Knex {
             
             await KnexInstance.migrate.latest(config)
                 .then(() => {
-                    // console.log('success migrate');
+
+                    if (this.option('seed')) {
+
+                        Venida.command(`Venida.app.Console.Knex.Seed`, null, false);
+                    }
                 })
                 .catch((err: any) => {
                     console.error(err);

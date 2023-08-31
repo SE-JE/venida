@@ -15,9 +15,9 @@ With venida developing a technology backend so much faster without having to ins
 git clone https://github.com/SE-JE/venida.git
 cd venida
 npm install
+copy .env.example .env
 npm run build
 npm run cp-error-declaration
-copy .env.example .env
 ```
 
 2. **Run the Venida**
